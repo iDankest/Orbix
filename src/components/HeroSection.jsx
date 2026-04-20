@@ -1,6 +1,6 @@
 export default function HeroSection() {
   return (
-    <section className="hero">
+    <section className="hero font-typography-scale" >
       <div className="hero-bg"></div>
       <div className="container mx-auto px-4 text-center ">
         <h1 className="text-5xl font-extrabold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">

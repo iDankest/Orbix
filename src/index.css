@@ -5,6 +5,26 @@
 body {
   @apply bg-slate-950 text-slate-100;
 }
+/* 
+Display — 48px / bold / 1.00 / +0.96px / D-DIN-Bold / uppercase
+Body — 16px / 400 / 1.70 / D-DIN
+Nav Bold — 13px / 700 / 0.94 / +1.17px / uppercase
+Caption — 12px / 400 / 1.00 / uppercase / +1px
+Micro — 10px / 400 / 0.94 / uppercase / +1px
+Minimal radius system — 4px for utility, 32px for buttons.
+https://getdesign.md/spacex/design-md
+
+*/
+
+:root {
+  font-family: 'typography-scale';
+  --font-family: 'typography-scale';
+  --bg-color: #000;
+  --dark-overlay: rgba(0, 0, 0, 0.6);
+  --ghost-surface: rgba(240, 240, 250, 0.1);
+  --spectrum-white: #f0f0fa;
+
+}
 
 .hero {
   position: relative;
@@ -25,6 +45,5 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  
   z-index: -1;
 }
