@@ -1,21 +1,18 @@
-
 import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HeroSection from "./components/HeroSection";
-import Card from "./components/Card";
-import CardDash from "./components/CardDash";
+import LandigStats from "./components/LandigStats";
+import Astronautas from "./components/Astronautas";
 
 function App() {
-
-
   return (
     <>
       <Header />
       <main>
         <HeroSection />
-        <Card title="Card Title" />
-        <CardDash />
+        <LandigStats />
+        <Astronautas />
       </main>
       <Footer />
     </>
