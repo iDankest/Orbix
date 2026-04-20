@@ -13,6 +13,7 @@ export function useFetch(url) {
         const response = await axios.get(url, { signal: controller.signal });
         setData(response.data);
     } catch (error) {
+        if(axios.isCancel(error)) return;
       setError(error.message || "Wiustons tenemos un problema");
     } finally {
       setLoading(false);

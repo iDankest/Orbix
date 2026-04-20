@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 body {
-  @apply bg-slate-950 text-slate-100;
+  max-width: 1400px;
+  margin: 0 auto;
+  background-color: var(--bg-color);
 }
 /* 
 Display — 48px / bold / 1.00 / +0.96px / D-DIN-Bold / uppercase
@@ -17,13 +19,24 @@ https://getdesign.md/spacex/design-md
 */
 
 :root {
-  font-family: 'typography-scale';
-  --font-family: 'typography-scale';
+  font-family: "typography-scale";
+  --font-family: "typography-scale";
   --bg-color: #000;
   --dark-overlay: rgba(0, 0, 0, 0.6);
   --ghost-surface: rgba(240, 240, 250, 0.1);
   --spectrum-white: #f0f0fa;
-
+}
+header {
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+.texto{
+  color: var(--spectrum-white);
+  font-family: var(--font-family);
 }
 
 .hero {
@@ -34,7 +47,7 @@ https://getdesign.md/spacex/design-md
   justify-content: center;
 }
 .hero-bg {
-  background-image: url('/src/assets/nasa.jpg');
+  background-image: url("/src/assets/nasa.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
