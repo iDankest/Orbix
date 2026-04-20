@@ -3,5 +3,28 @@
 @tailwind utilities;
 
 body {
-  @apply bg-slate-950 text-slate-100; /* Fondo espacial por defecto */
+  @apply bg-slate-950 text-slate-100;
+}
+
+.hero {
+  position: relative;
+  height: 30vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-bg {
+  background-image: url('/src/assets/nasa.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(0.6);
+  opacity: 0.7;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  
+  z-index: -1;
 }
