@@ -1,6 +1,6 @@
 export default function Card({ name, img, from, corporation }) {
   return (
-    <div className="group bg-slate-900/40 backdrop-blur-md border border-white/10 p-5 rounded-2xl hover:border-cyan-400/50 transition-all duration-500 flex flex-col justify-center items-center cursor-pointer">
+    <div className="  group bg-slate-900/40 backdrop-blur-md border border-white/10 p-5 rounded-2xl hover:border-cyan-400/50 transition-all duration-500 flex flex-col justify-center items-center cursor-pointer">
       {/* Contenedor de imagen con efecto de zoom al pasar el ratón */}
       <div className="overflow-hidden w-64 h-64 rounded-full border-2 border-cyan-400/30">
         <img 
@@ -10,7 +10,7 @@ export default function Card({ name, img, from, corporation }) {
         />
       </div>
 
-      <div className="mt-4 text-center">
+      <div className="mt-4 text-center texto">
         <h3 className="text-white text-lg font-bold tracking-tight">{name}</h3>
         
         <div className="flex items-center justify-center gap-2 mt-1">

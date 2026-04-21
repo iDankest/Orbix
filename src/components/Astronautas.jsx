@@ -44,10 +44,23 @@ export default function Astronautas() {
     <div className="p-8 flex flex-col gap-4">
       {/* HEADER Y BUSCADOR */}
       <div className="mb-4 w-full h-12 flex justify-between items-center gap-4 max-sm:flex-col max-sm:items-start">
-        <div className="ml-4 max-sm:w-full">
-          <h2 className="text-2xl font-bold text-white">Astronautas</h2>
-          <p className="text-white/70">Explora la lista de astronautas en activo</p>
-        </div>
+<div className="ml-4 max-sm:w-full space-y-1">
+  {/* Título: Más pequeño, en mayúsculas y con tracking (espaciado entre letras) */}
+  <h2 className="text-xs font-black text-cyan-500 uppercase tracking-[0.3em] flex items-center gap-2">
+    <span className="w-2 h-2 bg-cyan-500 rounded-full animate-pulse"></span>
+    Crew Manifest
+  </h2>
+  
+  {/* Subtítulo: Grande, blanco y con peso variable */}
+  <h3 className="text-3xl font-bold text-white tracking-tighter">
+    Astronautas <span className="font-light text-slate-500">en activo</span>
+  </h3>
+  
+  {/* Descripción: Más pequeña y elegante */}
+  <p className="text-sm text-slate-400 font-medium">
+    Personal verificado de la misión <span className="text-slate-200">Explorer Space</span>.
+  </p>
+</div>
 
         <label htmlFor="search" className="relative mr-4">
           <svg
