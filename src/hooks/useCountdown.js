@@ -1,8 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export function useCountdown(targetDate) {
   const [timeLeft, setTimeLeft] = useState({
-    days: 0, hours: 0, minutes: 0, seconds: 0, isOver: false
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    isOver: false,
   });
 
   useEffect(() => {
@@ -14,14 +18,22 @@ export function useCountdown(targetDate) {
 
       if (distance < 0) {
         clearInterval(interval);
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, isOver: true });
+        setTimeLeft({
+          days: 0,
+          hours: 0,
+          minutes: 0,
+          seconds: 0,
+          isOver: true,
+        });
       } else {
         setTimeLeft({
           days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          hours: Math.floor(
+            (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+          ),
           minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
           seconds: Math.floor((distance % (1000 * 60)) / 1000),
-          isOver: false
+          isOver: false,
         });
       }
     }, 1000);

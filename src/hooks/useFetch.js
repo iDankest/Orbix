@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 export function useFetch(url) {
   const [data, setData] = useState(null);
@@ -9,19 +9,19 @@ export function useFetch(url) {
   useEffect(() => {
     const controller = new AbortController();
     const fetchData = async () => {
-    try {
+      try {
         const response = await axios.get(url, { signal: controller.signal });
         setData(response.data);
-    } catch (error) {
-        if(axios.isCancel(error)) return;
-      setError(error.message || "Wiustons tenemos un problema");
-    } finally {
-      setLoading(false);
-    }
-  };
-  if (url) fetchData();
-  return () => controller.abort();
-}, [url]);
-  
+      } catch (error) {
+        if (axios.isCancel(error)) return;
+        setError(error.message || "Wiustons tenemos un problema");
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (url) fetchData();
+    return () => controller.abort();
+  }, [url]);
+
   return { data, loading, error };
 }
