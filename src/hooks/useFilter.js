@@ -1,17 +1,28 @@
-import { useState, useMemo } from 'react';
+import { useMemo } from "react";
 
-export function useFilter(data, keysToFilter) {
-  const [query, setQuery] = useState("");
-
+/**
+ * @param {Array} data - El array de astronautas
+ * @param {Array} keysToFilter - Ejemplo: ["name", "nationality", "agency.name", "agency.abbrev"]
+ * @param {string} externalQuery - El searchTerm que viene del Contexto
+ */
+export function useFilter(data, keysToFilter, externalQuery) {
   const filteredData = useMemo(() => {
-    if (!query) return data;
-    
-    return data?.filter((item) => 
-      keysToFilter.some(key => 
-        item[key]?.toString().toLowerCase().includes(query.toLowerCase())
-      )
-    );
-  }, [query, data, keysToFilter]);
+    // Si no hay datos, devolvemos array vacío
+    if (!data) return [];
+    // Si no hay búsqueda, devolvemos todo
+    if (!externalQuery) return data;
 
-  return { query, setQuery, filteredData };
+    const query = externalQuery.toLowerCase();
+
+    return data.filter((item) => {
+      return keysToFilter.some((key) => {
+        // Función para obtener valor en rutas anidadas (ej: "agency.name")
+        const value = key.split(".").reduce((obj, i) => obj?.[i], item);
+
+        return value?.toString().toLowerCase().includes(query);
+      });
+    });
+  }, [externalQuery, data, keysToFilter]);
+
+  return { filteredData };
 }
