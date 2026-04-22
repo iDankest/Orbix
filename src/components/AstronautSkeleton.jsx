@@ -1,4 +1,4 @@
-export default function AstronautSkeleton() {
+export default function AstronautSkeleton({speed = "2s"}) {
   return (
     <div className="bg-slate-900/40 border border-white/5 p-5 rounded-2xl animate-pulse">
       {/* Círculo de la foto */}
