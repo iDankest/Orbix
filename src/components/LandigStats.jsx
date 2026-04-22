@@ -1,8 +1,10 @@
 import CardDash from "./CardDash";
 import { useFetch } from "../hooks/useFetch";
 import { useCountdown } from "../hooks/useCountdown";
+import { OrbixContext } from "../context/OrbixContext";
+import { useContext } from "react";
 
-export default function MissionStats() {
+export default function LandingStats() {
   // Aquí llamarías a la API de los astronautas
   const {
     data: nextLaunchData,
@@ -17,7 +19,7 @@ export default function MissionStats() {
     "https://ll.thespacedevs.com/2.2.0/event/upcoming/",
   );
 
-  const { data } = useFetch("http://api.open-notify.org/astros.json");
+  const { inOrbitData } = useContext(OrbixContext);
 
   const countdownText = isOver
     ? "Misión Completada ✅"
@@ -27,7 +29,7 @@ export default function MissionStats() {
       {/* Tarjeta de Astronautas - Datos de la API */}
       <CardDash
         title="Personas en el espacio"
-        value={data ? data.number : "..."}
+        value={inOrbitData?.results.length || "..."}
         subtitle="Astronautas activos"
         icon={
           <svg

@@ -5,7 +5,7 @@ export default function HeroSection() {
   const [days, setDays] = useState(1240);
 
   return (
-    <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden bg-slate-950 pt-20">
+    <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden bg-slate-950 pt-20 ">
       {/* 1. Fondo de Estrellas (Inyección de CSS/Efecto visual) */}
       <div className="absolute inset-0 z-0 opacity-30 hero-bg">
         <div className="stars-container"></div>
@@ -27,7 +27,8 @@ export default function HeroSection() {
         </h1>
 
         <p className="mt-6 max-w-2xl mx-auto text-lg md:text-xl text-slate-400 font-light leading-relaxed">
-          The ultimate interface for <span className="text-white">real-time orbital intelligence</span>. 
+          The ultimate interface for{" "}
+          <span className="text-white">real-time orbital intelligence</span>.
           Bridging the gap between NASA's telemetry and SpaceX's ambition.
         </p>
 
@@ -41,13 +42,14 @@ export default function HeroSection() {
           </button>
         </div>
       </div>
-
-      {/* 4. Decoración de coordenadas (Feeling Dashboard) */}
-      <div className="absolute bottom-10 left-10 hidden lg:block text-[10px] font-mono text-slate-600">
-        LAT: 28.5729° N <br /> LONG: 80.6490° W
-      </div>
-      <div className="absolute bottom-10 right-10 hidden lg:block text-[10px] font-mono text-slate-600 text-right">
-        MISSION DAY: {days} <br /> STATUS: STABLE
+      <div className="flex w-full justify-evenly absolute bottom-16 ">
+        {/* 4. Decoración de coordenadas (Feeling Dashboard) */}
+        <div className="hidden lg:block text-[10px] font-mono text-slate-600 ">
+          LAT: 28.5729° N <br /> LONG: 80.6490° W
+        </div>
+        <div className="hidden lg:block text-[10px] font-mono text-slate-600 text-right">
+          MISSION DAY: {days} <br /> STATUS: STABLE
+        </div>
       </div>
     </section>
   );
