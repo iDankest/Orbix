@@ -50,10 +50,12 @@ const [selectedAstro, setSelectedAstro] = useState(null);
 
 
   return (
+    
     <div className="relative bg-slate-950 p-10 max-w-screen-2xl mx-auto">
       <div className="astro-header">
         <div className="stars-container"></div>
       </div>
+      
       {/* HEADER DE LA PÁGINA */}
       <header className=" min-h-[30vh] flex flex-col  justify-between overflow-hidden pt-20">
         <div className=" relative border-l-4 border-cyan-500 pl-6">
