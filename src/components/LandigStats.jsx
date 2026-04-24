@@ -1,11 +1,28 @@
 import CardDash from "./CardDash";
-import { useFetch } from "../hooks/useFetch";
+import { useFetch} from "../hooks/useFetch";
 import { useCountdown } from "../hooks/useCountdown";
 import { OrbixContext } from "../context/OrbixContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import AuthGate from "./AuthGate";
+import { useNavigate } from "react-router-dom";
 
-export default function LandingStats() {
+
+
+export default function LandingStats({onLoginSuccess}) {
   // Aquí llamarías a la API de los astronautas
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [commanderName, setCommanderName] = useState("");
+  const navigate = useNavigate();
+  
+  // Supongamos que tienes una función para guardar el login
+const handleFinalLogin = (name) => {
+    if (name) {
+      // Ahora esta función sí existe porque la recibimos arriba
+      onLoginSuccess(name); 
+      navigate("/commander-dashboard"); 
+    }
+  };
   const {
     data: nextLaunchData,
     loading,
@@ -107,6 +124,24 @@ export default function LandingStats() {
         }
         color="text-purple-400"
       />
+<div className="relative">
+  <AnimatePresence>
+    {isLoginOpen && (
+      <AuthGate 
+        layoutId="auth-card"
+        onClose={() => setIsLoginOpen(false)} 
+        onLogin={handleFinalLogin}
+      />
+    )}
+  </AnimatePresence>
+
+  {/* Si el login está cerrado, mostramos la tarjeta original */}
+  {!isLoginOpen && (
+    <motion.div
+      layoutId="auth-card" // MATCH con el de AuthGate
+      onClick={() => setIsLoginOpen(true)}
+      className="cursor-pointer h-full"
+    >
       <CardDash
         isAction={true}
         title="Explorar Misiones"
@@ -118,10 +153,10 @@ export default function LandingStats() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="icon icon-tabler icons-tabler-outline icon-tabler-square-plus-2"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="icon icon-tabler icons-tabler-outline icon-tabler-square-plus-2"
           >
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
             <path d="M12.5 21h-7.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v7.5" />
@@ -131,6 +166,9 @@ export default function LandingStats() {
         }
         color="text-cyan-400"
       />
-    </section>
+    </motion.div>
+  )}
+</div>
+  </section>
   );
 }
