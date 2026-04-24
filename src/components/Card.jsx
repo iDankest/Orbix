@@ -14,11 +14,11 @@ export default function Card({ name, img, from, corporation }) {
   return (
     <div className="  group bg-slate-900/40 backdrop-blur-md border border-white/10 p-5 rounded-2xl hover:border-cyan-400/50 transition-all duration-500 flex flex-col justify-center items-center cursor-pointer h-full">
       {/* Contenedor de imagen con efecto de zoom al pasar el ratón */}
-      <div className="overflow-hidden  max-w-52 max-h-52 rounded-full border-2 border-cyan-400/30">
+      <div className="overflow-hidden   rounded-full border-2 border-cyan-400/30">
         <img 
           src={imageError} 
           alt={name} 
-          className="object-cover object-center group-hover:scale-110 transition-transform duration-500 grayscale group-hover:grayscale-0" 
+          className="w-52 h-52 object-cover object-center group-hover:scale-110 transition-transform duration-500 grayscale group-hover:grayscale-0" 
           onError={handleImageError}
         />
       </div>

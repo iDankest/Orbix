@@ -40,7 +40,7 @@ https://getdesign.md/spacex/design-md
 
 .hero {
   position: relative;
-  height: 30vh;
+  height: 40vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -64,6 +64,7 @@ https://getdesign.md/spacex/design-md
     radial-gradient(2px 2px at 90px 40px, #fff, rgba(0, 0, 0, 0));
   background-size: 200px 200px;
   animation: moveStars 150s linear infinite;
+  pointer-events: none;
   opacity: 0.8;
 }
 
@@ -104,4 +105,40 @@ https://getdesign.md/spacex/design-md
   border-radius: 0 0 200px 0;
   pointer-events: none;
   mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+}
+.launches-header {
+  background-image: url("https://images.unsplash.com/photo-1628126235206-5260b9ea6441?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  height: 30vh;
+  width: 100%;
+  top: 0;
+  right: 5%;
+  opacity: 0.4;
+  z-index: 0;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, black 70%, transparent 100%),
+              linear-gradient(to top, black 70%, transparent 100%),
+              linear-gradient(to right, black 70%, transparent 100%),
+              linear-gradient(to left, black 70%, transparent 100%);
+}
+/* Estilo para el scrollbar personalizado */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px; /* Muy fino para que sea elegante */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05); /* Fondo casi invisible */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #06b6d4; /* Color Cyan-500 de Tailwind */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.5); /* Un pequeño brillo */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #22d3ee; /* Cyan-400 al pasar el ratón */
 }

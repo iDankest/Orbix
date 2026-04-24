@@ -1,3 +1,4 @@
+import React from 'react'; 
 import { createContext, useState } from "react"; // 1. Importa createContext
 import { useFetch } from "../hooks/useFetch";
 import { useLocalStorage } from "../hooks/useLocalStorage";
@@ -42,6 +43,7 @@ export function OrbixProvider({ children }) {
   const value = {
     inOrbitData,
     loadingInOrbit,
+    launchData,
     allAstronauts: allAstroData?.results || [],
     loadingAll,
     error,

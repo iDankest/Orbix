@@ -5,6 +5,7 @@ import AstronautSkeleton from "../components/AstronautSkeleton";
 import LoadingSpinner from "../components/LoadigSpinner";
 import { useFilter } from "../hooks/useFilter";
 import AstroModal from "../components/AstroModal";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function AstronautasPage() {
   // Traemos la lista completa del contexto
@@ -90,7 +91,12 @@ const [selectedAstro, setSelectedAstro] = useState(null);
         >
           {filteredData?.length > 0 ? (
             filteredData.map((astro) => (
-              <div key={astro.id} onClick={() => setSelectedAstro(astro)} className="cursor-pointer">
+             <motion.div
+    layoutId={`card-${astro.id}`} // <--- ID único para la transición
+    key={astro.id}
+    onClick={() => setSelectedAstro(astro)}
+    className="cursor-pointer"
+  >
               <Card
                 id={astro.id}
                 name={astro.name}
@@ -98,7 +104,7 @@ const [selectedAstro, setSelectedAstro] = useState(null);
                 corporation={astro.agency?.abbrev || "Independiente"}
                 from={astro.nationality}
               />
-              </div>
+              </motion.div>
             ))
           ) : (
             <div className="col-span-full text-center py-20">
@@ -110,7 +116,11 @@ const [selectedAstro, setSelectedAstro] = useState(null);
         </div>
       </div>
       {selectedAstro && (
-        <AstroModal astro={selectedAstro} onClose={closeModal} />
+        <AnimatePresence>
+          {selectedAstro && (
+            <AstroModal astro={selectedAstro} onClose={closeModal} />
+          )}
+        </AnimatePresence>
       )}
     </div>
   );
