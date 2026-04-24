@@ -2,16 +2,18 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion"; // Importante para la animación
 import AuthGate from "./AuthGate";
+import { useNavigate } from "react-router-dom";
 
-export default function HeroSection() {
+export default function HeroSection({ onLoginSuccess }) {
   const [days, setDays] = useState(1240);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const navigate = useNavigate();
 
   // Función para manejar el login exitoso
   const handleLogin = (name) => {
     if(name) {
-      console.log("Comandante identificado:", name);
-      window.location.href = "/commander-dashboard";
+      onLoginSuccess(name); 
+      navigate("/commander-dashboard"); 
     }
   };
 

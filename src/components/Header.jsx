@@ -20,7 +20,6 @@ export default function Header({ commander }) {
           <nav>
             <ul className="flex items-center space-x-1">
               {[
-                { name: "Home", path: "/" },
                 { name: "Astronauts", path: "/astronauts" },
                 { name: "Launches", path: "/launches" },
               ].map((link) => (
