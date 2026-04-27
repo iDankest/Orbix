@@ -11,7 +11,7 @@ export default function CardDash({
   // Si es una tarjeta de acción (Ver más), devolvemos un diseño ligeramente distinto
   if (isAction) {
     return (
-      <div className="group bg-cyan-500/10 border-2 border-dashed border-cyan-500/30 hover:border-cyan-400 hover:bg-cyan-500/20 transition-all duration-300 p-6 rounded-2xl w-full flex flex-col items-center justify-between cursor-pointer min-h-[160px]">
+      <div className="group bg-cyan-500/10 border-2 border-dashed border-cyan-500/30 hover:border-cyan-400 hover:bg-cyan-500/20 transition-all duration-300 p-6 rounded-2xl w-full flex flex-col items-center justify-between cursor-pointer min-h-[180px]">
         <span
           className={`${color} text-3xl mb-2 group-hover:scale-125 transition-transform duration-500`}
         >
@@ -29,7 +29,7 @@ export default function CardDash({
 
   // Si no es acción, devolvemos la tarjeta normal que ya tenías
   return (
-    <div className="bg-slate-900/40 border border-slate-700 hover:border-cyan-400/50 transition-all duration-300 p-6 rounded-2xl w-full relative group cursor-pointer flex flex-col justify-between">
+    <div className="bg-slate-900/40 border border-slate-700 hover:border-cyan-400/50 transition-all duration-300 p-6 rounded-2xl w-full relative group cursor-pointer flex flex-col justify-between min-h-[180px]">
       <h2 className="text-slate-500 uppercase text-xs tracking-widest font-semibold mb-2">
         {title}
       </h2>
