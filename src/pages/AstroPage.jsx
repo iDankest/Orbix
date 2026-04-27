@@ -57,7 +57,7 @@ const [selectedAstro, setSelectedAstro] = useState(null);
       </div>
       
       {/* HEADER DE LA PÁGINA */}
-      <header className=" min-h-[30vh] flex flex-col  justify-between overflow-hidden pt-20">
+      <header className=" min-h-[30vh] flex flex-col  justify-between overflow-hidden pt-20 gap-8" >
         <div className=" relative border-l-4 border-cyan-500 pl-6">
           <h1 className="text-4xl font-black text-white uppercase tracking-tighter">
             Archivo <span className="text-cyan-500">Tripulación</span>
