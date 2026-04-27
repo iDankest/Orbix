@@ -1,7 +1,7 @@
 <div align="center">
 
 <!-- Para usar el logo: guarda orbix-logo.svg en la raíz del repo -->
-<!-- <img src="./src/assets/Favicon.png" width="100" height="100" alt="Orbix Logo" /> -->
+<img src="./src/assets/Favicon.png" width="100" height="100" alt="Orbix Logo" />
 
 <svg width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
   <circle cx="12" cy="12" r="11" stroke="#22d3ee" stroke-width="0.5" opacity="0.2"/>
