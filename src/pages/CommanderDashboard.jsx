@@ -13,7 +13,7 @@ export default function CommanderDashboard({ commander, setCommander }) {
 
   return (
     <div 
-      className=" mt-20 min-h-screen bg-slate-950 text-cyan-400 font-mono p-4 md:p-8 relative overflow-hidden"
+      className=" min-h-screen bg-slate-950 text-cyan-400 font-mono p-4 md:p-8 relative overflow-hidden"
       style={{
         backgroundImage: `url(${dailyPhoto?.url})`,
         backgroundSize: 'cover',
@@ -25,7 +25,7 @@ export default function CommanderDashboard({ commander, setCommander }) {
 
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* HEADER */}
-        <header className="flex justify-between items-end border-b border-cyan-500/30 pb-6 mb-8">
+        <header className="flex justify-between items-end border-b border-cyan-500/30 pb-6 mb-8 pt-20">
           <div>
             <p className="text-[10px] tracking-[0.5em] text-cyan-500/60 uppercase">System Status: Nominal</p>
             <h1 className="text-4xl font-black italic text-white">
