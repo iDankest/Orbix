@@ -106,8 +106,6 @@ npm install
 npm run dev
 ```
 
-> ⚠️ Necesitas una API Key de [Google Gemini](https://ai.google.dev/) (capa gratuita disponible) y acceso a las APIs de datos espaciales configuradas en el proyecto.
-
 ---
 
 ## 🌌 Desarrollado por
