@@ -35,8 +35,6 @@ export default function LaunchesPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const { launchData } = useContext(OrbixContext);
 
-
-
   // FETCH PARA EL HISTORIAL
   useEffect(() => {
     if (view === "previous" && historyData.length === 0) {
@@ -66,7 +64,7 @@ export default function LaunchesPage() {
 
   return (
     <div className="relative pt-20 overflow-hidden bg-slate-950 text-white md:p-10  max-w-screen-2xl mx-auto">
-   {/*    <div className="stars-container absolute inset-0 z-0 h-full"></div> */}
+      {/*    <div className="stars-container absolute inset-0 z-0 h-full"></div> */}
       <div className="max-w-7xl mx-auto pt-20">
         {/* 1. SECCIÓN MISSION CONTROL */}
         <AnimatePresence mode="wait">
@@ -93,19 +91,40 @@ export default function LaunchesPage() {
               </div>
               <div className="flex flex-col lg:flex-row gap-4 h-[500px] bg-black rounded-3xl overflow-hidden border border-white/10">
                 <div className="flex-[3] bg-slate-900">
-                  <iframe
-                    src={`https://www.youtube.com/embed/${activeLive.vidURLs?.[0]?.url.split("v=")[1] || "dQw4w9WgXcQ"}?autoplay=1`}
-                    className="w-full h-full border-0"
-                    allowFullScreen
-                  />
+                  {/* Comprobamos si existe la URL del video, si no, mostramos el placeholder */}
+                  {activeLive.vidURLs && activeLive.vidURLs.length > 0 ? (
+                    <iframe
+                      src={`https://www.youtube.com/embed/${activeLive.vidURLs[0].url.split("v=")[1]}`}
+                      className="w-full h-full border-0"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <NoSignalFeed />
+                  )}
                 </div>
-                <div className="flex-1 bg-slate-950/50 p-4 border-l border-white/10 hidden lg:block">
-                  <p className="text-[10px] text-cyan-500 font-mono mb-4">
+                <div className="flex-1 bg-slate-950/50 p-4 border-l border-white/10 hidden lg:block font-mono">
+                  <p className="text-[10px] text-cyan-500 mb-4 animate-pulse">
                     COMS_LINK_ACTIVE
                   </p>
-                  <p className="text-slate-600 text-sm italic">
-                    Esperando datos de telemetría...
-                  </p>
+                  <div className="space-y-2 text-[10px] uppercase text-slate-400">
+                    <p className="text-red-500/50">
+                      {">"} ENCRYPTED_STREAM_FAILED
+                    </p>
+                    <p>{">"} RECOGNIZING_LOCATION...</p>
+                    <p>
+                      {">"} PAD: {activeLive.pad?.name || "UNKNOWN"}
+                    </p>
+                    <p>
+                      {">"} STATUS: {activeLive.status?.name}
+                    </p>
+                    <motion.p
+                      animate={{ opacity: [0, 1] }}
+                      transition={{ repeat: Infinity, duration: 0.8 }}
+                      className="text-cyan-500"
+                    >
+                      _WAITING_FOR_UPLINK
+                    </motion.p>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -229,7 +248,11 @@ export default function LaunchesPage() {
 }
 
 // --- SUB-COMPONENTE: MODAL DE DETALLES ---
-function LaunchDetailModal({ launch, onClose, placeholderImage = placeholder }) {
+function LaunchDetailModal({
+  launch,
+  onClose,
+  placeholderImage = placeholder,
+}) {
   const [imgSrc, setImgSrc] = useState(launch?.image || placeholderImage);
   return (
     <div className="fixed inset-0 z-[150] flex items-center justify-center p-4">
@@ -299,7 +322,11 @@ const TimerCell = ({ date }) => {
   );
 };
 
-const HistoryCard = ({ launch, onOpenInfo, placeholderImage = placeholder}) => {
+const HistoryCard = ({
+  launch,
+  onOpenInfo,
+  placeholderImage = placeholder,
+}) => {
   const [imgSrc, setImgSrc] = useState(launch?.image || placeholderImage);
   return (
     <motion.div
@@ -366,3 +393,39 @@ const HistoryCard = ({ launch, onOpenInfo, placeholderImage = placeholder}) => {
     </motion.div>
   );
 };
+const NoSignalFeed = () => (
+  <div className="relative w-full h-full bg-black flex items-center justify-center overflow-hidden">
+    {/* Efecto de ruido/estática de fondo */}
+    <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://media.giphy.com/media/oEI9uWUicKgPUK4S8f/giphy.gif')]" />
+
+    <div className="text-center z-10 p-6">
+      <motion.div
+        animate={{ opacity: [1, 0.4, 1] }}
+        transition={{ duration: 0.2, repeat: Infinity }}
+        className="text-red-500 mb-4 flex justify-center"
+      >
+        <svg
+          width="60"
+          height="60"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01" />
+        </svg>
+      </motion.div>
+
+      <h3 className="text-white font-mono text-xl font-black tracking-tighter uppercase mb-2">
+        SIGNAL_LOSS: NO_VIDEO_FEED
+      </h3>
+      <p className="text-slate-500 font-mono text-xs uppercase tracking-widest animate-pulse">
+        Intentando reestablecer enlace con la estación de{" "}
+        {Math.floor(Math.random() * 100)}...
+      </p>
+    </div>
+
+    {/* Líneas de escaneo (Scanlines) */}
+    <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,118,0.06))] bg-[length:100%_4px,3px_100%]" />
+  </div>
+);
