@@ -1,7 +1,20 @@
 <div align="center">
 
 <!-- Para usar el logo: guarda orbix-logo.svg en la raíz del repo -->
-<img src="./public/orbix-logo.svg" width="100" height="100" alt="Orbix Logo" />
+<!-- <img src="./src/assets/Favicon.png" width="100" height="100" alt="Orbix Logo" /> -->
+
+<svg width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="12" cy="12" r="11" stroke="#22d3ee" stroke-width="0.5" opacity="0.2"/>
+  <path 
+    d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C15.4323 2 18.467 3.73147 20.25 6.38" 
+    stroke="#22d3ee" 
+    stroke-width="1.5" 
+    stroke-linecap="round"
+  />
+  <circle cx="12" cy="12" r="3.5" fill="#22d3ee"/>
+  <circle cx="12" cy="12" r="3.5" fill="#22d3ee" opacity="0.3" r="5.5"/>
+</svg>
+ 
 
 # Orbix
 
