@@ -7,10 +7,11 @@ import { useCountdown } from "../hooks/useCountdown";
 import ISSTracker from "../components/ISSTracker";
 import ChatAI from "../components/ChatAI";
 import DashboardDock from "../components/DashboardDock";
+import MissionSelector from "../components/MissionSelector";
 
 export default function CommanderDashboard({ commander, setCommander }) {
   const { dailyPhoto, messages, sendMessage, inOrbitData } = useContext(OrbixContext);
-  const { widgets, removeWidget } = useDashboardWidgets();
+  const { widgets, addWidget, removeWidget } = useDashboardWidgets();
   const { visibleSections, toggleSection } = useDashboardSections();
   const constraintsRef = useRef(null);
 
@@ -112,18 +113,19 @@ export default function CommanderDashboard({ commander, setCommander }) {
           {visibleSections.find((s) => s.id === "my-missions") && (
             <SectionWrapper key="my-missions" className="md:col-span-3">
               <DraggableWidget title="My Missions" constraintsRef={constraintsRef}>
-                {widgets.length > 0 ? (
-                  <div className="space-y-3 max-h-[300px] overflow-y-auto custom-scrollbar pr-1">
-                    {widgets.map((w) => (
-                      <MissionWidgetCard key={w.id} widget={w} onRemove={removeWidget} />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-6">
-                    <p className="text-[10px] text-slate-500">No hay misiones en tu dashboard</p>
-                    <p className="text-[8px] text-slate-600 mt-2">Añádelas desde Manifiesto Orbix</p>
-                  </div>
-                )}
+                <div className="space-y-3 max-h-[260px] overflow-y-auto custom-scrollbar pr-1">
+                  {widgets.map((w) => (
+                    <MissionWidgetCard key={w.id} widget={w} onRemove={removeWidget} />
+                  ))}
+                  {widgets.length === 0 && (
+                    <div className="text-center py-4">
+                      <p className="text-[10px] text-slate-500">No hay misiones</p>
+                    </div>
+                  )}
+                </div>
+                <div className="mt-3">
+                  <MissionSelector onAdd={addWidget} widgetIds={widgets.map((w) => w.id)} />
+                </div>
               </DraggableWidget>
             </SectionWrapper>
           )}
