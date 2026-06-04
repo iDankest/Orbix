@@ -2,6 +2,7 @@ import { useRef, useState, useContext, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { OrbixContext } from "../context/OrbixContext";
 import { useCountdown } from "../hooks/useCountdown";
+import { useDashboardWidgets } from "../hooks/useDashboardWidgets";
 const placeholder =
   "https://images.unsplash.com/photo-1614728263952-84ea256f9679?q=80&w=6097&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
@@ -34,6 +35,7 @@ export default function LaunchesPage() {
   const [historyData, setHistoryData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const { launchData } = useContext(OrbixContext);
+  const { widgets, addWidget } = useDashboardWidgets();
 
   // FETCH PARA EL HISTORIAL
   useEffect(() => {
@@ -208,6 +210,16 @@ export default function LaunchesPage() {
                         >
                           LIVE FEED
                         </button>
+                        <button
+                          onClick={() => addWidget(launch)}
+                          className={`p-3 rounded-xl text-[10px] font-bold border transition-all ${
+                            widgets.some((w) => w.id === launch.id)
+                              ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
+                              : "bg-white/5 text-white border-white/5 hover:border-cyan-500/50"
+                          }`}
+                        >
+                          {widgets.some((w) => w.id === launch.id) ? "✓ AÑADIDA" : "+ DASH"}
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -328,6 +340,7 @@ const HistoryCard = ({
   placeholderImage = placeholder,
 }) => {
   const [imgSrc, setImgSrc] = useState(launch?.image || placeholderImage);
+  const { widgets, addWidget } = useDashboardWidgets();
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
@@ -383,12 +396,24 @@ const HistoryCard = ({
           </div>
         </div>
 
-        <button
-          onClick={() => onOpenInfo(launch)}
-          className="w-fit px-8 py-3 bg-white/5 hover:bg-cyan-500 hover:text-black rounded-xl font-bold text-xs transition-all uppercase tracking-widest border border-white/10"
-        >
-          Expandir Archivo +
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={() => onOpenInfo(launch)}
+            className="px-8 py-3 bg-white/5 hover:bg-cyan-500 hover:text-black rounded-xl font-bold text-xs transition-all uppercase tracking-widest border border-white/10"
+          >
+            Expandir Archivo +
+          </button>
+          <button
+            onClick={() => addWidget(launch)}
+            className={`px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-widest transition-all ${
+              widgets.some((w) => w.id === launch.id)
+                ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                : "bg-white/5 text-white border border-white/10 hover:border-cyan-500/50"
+            }`}
+          >
+            {widgets.some((w) => w.id === launch.id) ? "✓ EN DASHBOARD" : "+ DASHBOARD"}
+          </button>
+        </div>
       </div>
     </motion.div>
   );
