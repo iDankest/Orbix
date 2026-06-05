@@ -28,7 +28,7 @@ export function OrbixProvider({ children }) {
 
   // --- 3. ESTADOS DE INTERACCIÓN ---
   const [messages, setMessages] = useLocalStorage("orbix_chat", [
-    { id: 1, user: "SYSTEM", text: "Bienvenido al centro de control Orbix.", time: "09:00" },
+    { id: 1, user: "System Commi...", text: "Bienvenido al centro de control Orbix.", time: "09:00" },
     { id: 2, user: "Ground Control", text: "Todos los sistemas en verde.", time: "09:05" }
   ]);
 
@@ -53,10 +53,10 @@ export function OrbixProvider({ children }) {
     nextLaunch,
     dailyPhoto,
     messages,
-    sendMessage: (text) =>
-      setMessages([
-        ...messages,
-        { id: Date.now(), user: "Comandante", text, time: new Date().toLocaleTimeString() },
+    sendMessage: (text, user) =>
+      setMessages((prev) => [
+        ...prev,
+        { id: Date.now(), user: user || "Comandante", text, time: new Date().toLocaleTimeString() },
       ]),
   };
 

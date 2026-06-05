@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const ALL_SECTIONS = [
   { id: "iss-tracker", title: "Orbital Tracking (ISS)" },
-  { id: "chat", title: "Global Communication Feed" },
+  { id: "chat", title: "System Communication Feed" },
   { id: "my-missions", title: "My Missions" },
   { id: "quick-stats", title: "Quick Stats" },
   { id: "space-race", title: "Space Race" },

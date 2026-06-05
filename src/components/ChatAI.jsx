@@ -37,7 +37,7 @@ function pick(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-export default function ChatAI({ messages: contextMessages, sendMessage, widgetsCount }) {
+export default function ChatAI({ messages: contextMessages, sendMessage, widgetsCount, commander }) {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [localMessages, setLocalMessages] = useState([]);
@@ -58,31 +58,37 @@ export default function ChatAI({ messages: contextMessages, sendMessage, widgets
 
     setTimeout(() => {
       const reply = getBotResponse(input.trim(), widgetsCount);
-      sendMessage(reply);
+      sendMessage(reply, "Orbix IA");
       setIsTyping(false);
     }, 1000 + Math.random() * 1500);
   }, [input, sendMessage, widgetsCount]);
 
-  const allMessages = [...(contextMessages || [])];
+  const allMessages = contextMessages || [];
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col flex-1 min-h-0">
       <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-3 text-xs pr-2 custom-scrollbar">
         {allMessages.length > 0 ? (
-          [...allMessages].reverse().slice(0, 50).map((msg) => (
+          [...allMessages].map((msg) => (
             <motion.div
               key={msg.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               className={`p-3 rounded-xl border ${
-                msg.user === "SYSTEM" || msg.user === "Orbix_AI"
+                msg.user === "System Commi..."
+                  ? "bg-slate-500/10 border-slate-500/20 ml-4"
+                  : msg.user === "Orbix_AI" || msg.user === "Orbix IA"
                   ? "bg-cyan-500/10 border-cyan-500/20 ml-4"
-                  : "bg-white/5 border-white/5 mr-4"
+                  : "bg-indigo-500/15 border-indigo-500/25 mr-4"
               }`}
             >
               <div className="flex justify-between items-center mb-1">
-                <p className={`text-[9px] font-black ${msg.user === "Orbix_AI" ? "text-cyan-400" : "text-cyan-600"}`}>
-                  [{msg.user}]
+                <p className={`text-[9px] font-black ${
+                  msg.user === "System Commi..." ? "text-slate-500" :
+                  msg.user === "Orbix_AI" || msg.user === "Orbix IA" ? "text-cyan-400" :
+                  "text-indigo-400"
+                }`}>
+                  [{msg.user === "Comandante" ? `Comandante ${commander}` : msg.user === "Orbix_AI" ? "Orbix IA" : msg.user}]
                 </p>
                 {msg.time && <p className="text-[8px] text-slate-600">{msg.time}</p>}
               </div>
@@ -112,9 +118,9 @@ export default function ChatAI({ messages: contextMessages, sendMessage, widgets
         </AnimatePresence>
       </div>
 
-      <div className="mt-4 flex gap-2">
+      <div className="mt-4 flex gap-2 min-w-0 pr-2 items-center">
         <input
-          className="bg-white/5 border border-white/10 rounded-lg p-3 flex-1 text-xs outline-none focus:border-cyan-500 transition-all"
+          className="bg-white/5 border border-white/10 rounded-lg px-3 h-10 text-xs flex-1 min-w-0 outline-none focus:border-cyan-500 transition-all"
           placeholder="Escribir en la bitácora..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
@@ -122,7 +128,7 @@ export default function ChatAI({ messages: contextMessages, sendMessage, widgets
         />
         <button
           onClick={handleSend}
-          className="bg-cyan-500 text-black px-5 py-3 rounded-lg font-bold text-[10px] uppercase hover:bg-cyan-400 transition-all"
+          className="bg-cyan-500 text-black px-5 h-10 rounded-lg font-bold text-[10px] uppercase hover:bg-cyan-400 transition-all shrink-0 flex items-center"
         >
           SEND
         </button>

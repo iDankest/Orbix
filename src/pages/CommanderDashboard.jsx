@@ -21,6 +21,7 @@ export default function CommanderDashboard({ commander, setCommander }) {
 
   const handleLogout = () => {
     setCommander(null);
+    localStorage.clear();
     window.location.href = "/";
   };
 
@@ -75,8 +76,8 @@ export default function CommanderDashboard({ commander, setCommander }) {
 
           {visibleSections.find((s) => s.id === "chat") && (
             <SectionWrapper key="chat" className="md:col-span-6">
-              <DraggableWidget title="Global Communication Feed" widgetId="chat" locked={locked} positions={positions} onDragEnd={savePosition} className="h-[560px] flex flex-col">
-                <ChatAI messages={messages} sendMessage={sendMessage} widgetsCount={visibleIds.length} />
+              <DraggableWidget title="System Communication Feed" widgetId="chat" locked={locked} positions={positions} onDragEnd={savePosition} className="h-[560px] flex flex-col">
+                <ChatAI messages={messages} sendMessage={sendMessage} widgetsCount={visibleIds.length} commander={commander} />
               </DraggableWidget>
             </SectionWrapper>
           )}
