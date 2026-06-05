@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useContext, useRef } from "react";
+import { useContext } from "react";
 import { OrbixContext } from "../context/OrbixContext";
 import { useDashboardWidgets } from "../hooks/useDashboardWidgets";
 import { useDashboardSections } from "../hooks/useDashboardSections";
@@ -14,7 +14,6 @@ export default function CommanderDashboard({ commander, setCommander }) {
   const { dailyPhoto, messages, sendMessage, inOrbitData, allAstronauts, launchData } = useContext(OrbixContext);
   const { widgets, addWidget, removeWidget } = useDashboardWidgets();
   const { visibleSections, toggleSection } = useDashboardSections();
-  const constraintsRef = useRef(null);
 
   const handleLogout = () => {
     setCommander(null);
@@ -37,7 +36,7 @@ export default function CommanderDashboard({ commander, setCommander }) {
     >
       <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md z-0" />
 
-      <div ref={constraintsRef} className="relative z-10 max-w-7xl mx-auto">
+      <div className="relative z-10 max-w-7xl mx-auto">
         <header className="flex justify-between items-end border-b border-cyan-500/30 pb-6 mb-8 pt-20">
           <div>
             <p className="text-[10px] tracking-[0.5em] text-cyan-500/60 uppercase">System Status: Nominal</p>
@@ -63,45 +62,16 @@ export default function CommanderDashboard({ commander, setCommander }) {
 
           {visibleSections.find((s) => s.id === "iss-tracker") && (
             <SectionWrapper key="iss-tracker" className="md:col-span-4">
-              <DraggableWidget title="Orbital Tracking (ISS)" constraintsRef={constraintsRef}>
+              <DraggableWidget title="Orbital Tracking (ISS)">
                 <ISSTracker inOrbitCount={inOrbitCount} />
                 <div className="mt-2 text-[8px] text-slate-600 text-center">ALT: 408 KM · VEL: 7.66 KM/S</div>
               </DraggableWidget>
             </SectionWrapper>
           )}
 
-          {visibleSections.find((s) => s.id === "solar-weather") && (
-            <SectionWrapper key="solar-weather" className="md:col-span-4">
-              <DraggableWidget title="Solar Weather" constraintsRef={constraintsRef}>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                  <p className="text-xs text-green-500">RADIATION LEVEL: NOMINAL</p>
-                </div>
-                <p className="text-[9px] text-slate-400 mt-2">Next EVA window: <span className="text-cyan-400">OPEN</span></p>
-                <div className="mt-3 grid grid-cols-2 gap-2 text-[9px]">
-                  <div className="bg-white/5 p-2 rounded">SOLAR WIND: 450 KM/S</div>
-                  <div className="bg-white/5 p-2 rounded">MAGNETOSPHERE: STABLE</div>
-                </div>
-              </DraggableWidget>
-            </SectionWrapper>
-          )}
-
-          {visibleSections.find((s) => s.id === "system-modules") && (
-            <SectionWrapper key="system-modules" className="md:col-span-4">
-              <DraggableWidget title="System Modules" constraintsRef={constraintsRef}>
-                <div className="space-y-2 text-[10px]">
-                  <ModuleRow label="Life Support" status="NOMINAL" color="text-green-500" />
-                  <ModuleRow label="Propulsion" status="STANDBY" color="text-yellow-500" />
-                  <ModuleRow label="Communications" status="ACTIVE" color="text-cyan-400" />
-                  <ModuleRow label="Navigation" status="LOCKED" color="text-green-500" />
-                </div>
-              </DraggableWidget>
-            </SectionWrapper>
-          )}
-
           {visibleSections.find((s) => s.id === "chat") && (
             <SectionWrapper key="chat" className="md:col-span-6">
-              <DraggableWidget title="Global Communication Feed" className="h-[560px] flex flex-col" constraintsRef={constraintsRef}>
+              <DraggableWidget title="Global Communication Feed" className="h-[560px] flex flex-col">
                 <ChatAI messages={messages} sendMessage={sendMessage} widgetsCount={visibleIds.length} />
               </DraggableWidget>
             </SectionWrapper>
@@ -109,7 +79,7 @@ export default function CommanderDashboard({ commander, setCommander }) {
 
           {visibleSections.find((s) => s.id === "my-missions") && (
             <SectionWrapper key="my-missions" className="md:col-span-3">
-              <DraggableWidget title="My Missions" constraintsRef={constraintsRef}>
+              <DraggableWidget title="My Missions">
                 <div className="space-y-3 max-h-[260px] overflow-y-auto custom-scrollbar pr-1">
                   {widgets.map((w) => (
                     <MissionWidgetCard key={w.id} widget={w} onRemove={removeWidget} />
@@ -129,7 +99,7 @@ export default function CommanderDashboard({ commander, setCommander }) {
 
           {visibleSections.find((s) => s.id === "quick-stats") && (
             <SectionWrapper key="quick-stats" className="md:col-span-3">
-              <DraggableWidget title="Quick Stats" constraintsRef={constraintsRef}>
+              <DraggableWidget title="Quick Stats">
                 <div className="space-y-3 text-[10px]">
                   <StatRow label="Widgets visibles" value={visibleIds.length} />
                   <StatRow label="Misiones guardadas" value={widgets.length} />
@@ -142,8 +112,8 @@ export default function CommanderDashboard({ commander, setCommander }) {
           )}
 
           {visibleSections.find((s) => s.id === "space-race") && (
-            <SectionWrapper key="space-race" className="md:col-span-4">
-              <DraggableWidget title="Space Race Dominance" constraintsRef={constraintsRef}>
+            <SectionWrapper key="space-race" className="md:col-span-5">
+              <DraggableWidget title="Space Race Dominance">
                 <SpaceRaceWidget allAstronauts={allAstronauts} launchData={launchData} />
               </DraggableWidget>
             </SectionWrapper>
@@ -172,12 +142,11 @@ function SectionWrapper({ children, className }) {
   );
 }
 
-function DraggableWidget({ title, children, className = "", constraintsRef }) {
+function DraggableWidget({ title, children, className = "" }) {
   return (
     <motion.div
       drag
-      dragConstraints={constraintsRef}
-      dragElastic={0.08}
+      dragMomentum
       whileDrag={{ scale: 1.03, zIndex: 50, boxShadow: "0 0 40px rgba(6,182,212,0.2)" }}
       className={`bg-slate-900/40 border border-white/10 backdrop-blur-xl p-6 rounded-3xl shadow-2xl cursor-grab active:cursor-grabbing select-none ${className}`}
     >
@@ -218,15 +187,6 @@ function MissionWidgetCard({ widget, onRemove }) {
         )}
       </div>
     </motion.div>
-  );
-}
-
-function ModuleRow({ label, status, color }) {
-  return (
-    <div className="flex justify-between items-center">
-      <span className="text-slate-400">{label}</span>
-      <span className={`${color}`}>● {status}</span>
-    </div>
   );
 }
 
