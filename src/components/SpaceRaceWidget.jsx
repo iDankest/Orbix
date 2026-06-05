@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useCountdown } from "../hooks/useCountdown";
 
 const TYPE_IMAGES = {
-  Lunar: "https://images.unsplash.com/photo-eHTBf7286Xw?w=80&h=80&fit=crop&auto=format",
-  Marte: "https://images.unsplash.com/photo-0va-HPsNz1w?w=80&h=80&fit=crop&auto=format",
-  Reutilizable: "https://images.unsplash.com/photo-SNIl4gK46Sc?w=80&h=80&fit=crop&auto=format",
-  Tripulado: "https://images.unsplash.com/photo-wAkLQnT2TC0?w=80&h=80&fit=crop&auto=format",
-  Lanzador: "https://images.unsplash.com/photo-SNIl4gK46Sc?w=80&h=80&fit=crop&auto=format",
+  Lunar: "https://images.unsplash.com/photo-1446941611757-91d2c3bd3d45?w=80&h=80&fit=crop&auto=format",
+  Marte: "https://images.unsplash.com/photo-1654649451086-dd75d8170a27?w=80&h=80&fit=crop&auto=format",
+  Reutilizable: "https://images.unsplash.com/photo-1517976547714-720226b864c1?w=80&h=80&fit=crop&auto=format",
+  Tripulado: "https://images.unsplash.com/photo-1661035739366-3b64cda80c1a?w=80&h=80&fit=crop&auto=format",
+  Lanzador: "https://images.unsplash.com/photo-1517976547714-720226b864c1?w=80&h=80&fit=crop&auto=format",
 };
 
 function MissionTypeIcon({ type }) {
