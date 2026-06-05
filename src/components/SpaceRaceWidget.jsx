@@ -11,11 +11,11 @@ const TABS = [
 const AGENCIAS = [
   { name: "NASA", country: "USA", domain: "nasa.gov", color: "#0B3D91", focus: ["Lunar", "Marte", "Telescopios"], budget: "25.4B" },
   { name: "SpaceX", country: "USA", domain: "spacex.com", color: "#005288", focus: ["Reutilizable", "Marte", "Lunar"], budget: "—" },
-  { name: "CNSA", country: "China", domain: "cnsa.gov.cn", color: "#DE2910", focus: ["Lunar", "Marte", "Estación"], budget: "~15B" },
+  { name: "CNSA", country: "China", domain: "cnsa.gov.cn", color: "#DE2910", focus: ["Lunar", "Marte", "Estación"], budget: "~15B", logo: "https://pbs.twimg.com/profile_images/1634603372446621698/ilFJ3jOa_400x400.jpg" },
   { name: "ESA", country: "Europa", domain: "esa.int", color: "#004C97", focus: ["Lunar", "Marte", "Ariane"], budget: "7.8B" },
-  { name: "Roscosmos", country: "Rusia", domain: "roscosmos.ru", color: "#0033A0", focus: ["Lunar", "Soyuz", "Estación"], budget: "~4B" },
+  { name: "Roscosmos", country: "Rusia", domain: "roscosmos.ru", color: "#0033A0", focus: ["Lunar", "Soyuz", "Estación"], budget: "~4B", logo: "https://rocket-launch-today.s3.us-east-1.amazonaws.com/roscosmos_ff804fc943.png" },
   { name: "ISRO", country: "India", domain: "isro.gov.in", color: "#003366", focus: ["Lunar", "Marte", "Satélites"], budget: "~1.8B" },
-  { name: "JAXA", country: "Japón", domain: "jaxa.jp", color: "#003DA5", focus: ["Lunar", "Asteroides", "ISS"], budget: "~2.5B" },
+  { name: "JAXA", country: "Japón", domain: "jaxa.jp", color: "#003DA5", focus: ["Lunar", "Asteroides", "ISS"], budget: "~2.5B", logo: "https://www.un-spider.org/sites/default/files/jaxa%20logo.png" },
   { name: "Blue Origin", country: "USA", domain: "blueorigin.com", color: "#002D62", focus: ["Reutilizable", "Lunar"], budget: "—" },
   { name: "Rocket Lab", country: "USA/NZ", domain: "rocketlabusa.com", color: "#A3C34A", focus: ["Pequeños", "Interplanetario"], budget: "—" },
 ];
@@ -71,13 +71,14 @@ function TabBar({ tabs, active, onChange }) {
   );
 }
 
-function Logo({ domain, color, name }) {
+function Logo({ domain, color, name, logo }) {
   const [err, setErr] = useState(false);
+  const src = logo || `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
   return (
     <div className="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0" style={{ backgroundColor: color }}>
       {!err ? (
         <img
-          src={`https://www.google.com/s2/favicons?domain=${domain}&sz=64`}
+          src={src}
           alt={name}
           className="w-full h-full object-contain p-1"
           onError={() => setErr(true)}
@@ -106,7 +107,7 @@ function AgenciasTab() {
           className="block bg-white/5 hover:bg-cyan-500/10 border border-white/5 hover:border-cyan-500/30 rounded-xl p-3 transition-all group"
         >
           <div className="flex items-center gap-3">
-            <Logo domain={a.domain} color={a.color} name={a.name} />
+            <Logo domain={a.domain} color={a.color} name={a.name} logo={a.logo} />
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
                 <p className="text-[10px] text-white font-bold group-hover:text-cyan-400 transition-colors">{a.name}</p>
