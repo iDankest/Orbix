@@ -2,8 +2,6 @@ import { useLocalStorage } from "./useLocalStorage";
 
 const DEFAULT_SECTIONS = [
   { id: "iss-tracker", title: "Orbital Tracking (ISS)", visible: true },
-  { id: "solar-weather", title: "Solar Weather", visible: true },
-  { id: "system-modules", title: "System Modules", visible: true },
   { id: "chat", title: "Global Communication Feed", visible: true },
   { id: "my-missions", title: "My Missions", visible: true },
   { id: "quick-stats", title: "Quick Stats", visible: true },
