@@ -2,46 +2,22 @@ import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCountdown } from "../hooks/useCountdown";
 
-const TYPE_ICONS = {
-  Lunar: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5 text-cyan-400">
-      <path d="M12 2a10 10 0 0 1 0 20 8 8 0 0 0 0-16z" strokeLinecap="round" />
-      <circle cx="14" cy="9" r="0.5" fill="currentColor" />
-      <circle cx="16" cy="13" r="0.5" fill="currentColor" />
-      <circle cx="10" cy="14" r="0.5" fill="currentColor" />
-    </svg>
-  ),
-  Marte: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5 text-red-400">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M15 9l4-4M19 5h-4M19 5v4" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
-  Reutilizable: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5 text-green-400">
-      <path d="M17 2l4 4-4 4" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M3 11V9a4 4 0 0 1 4-4h14M7 22l-4-4 4-4" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M21 13v2a4 4 0 0 1-4 4H3" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
-  Tripulado: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5 text-yellow-400">
-      <circle cx="12" cy="8" r="4" />
-      <path d="M5.5 20a8 8 0 0 1 13 0" strokeLinecap="round" />
-    </svg>
-  ),
-  Lanzador: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5 text-purple-400">
-      <path d="M4 20h16" strokeLinecap="round" />
-      <path d="M12 4v12M9 16l3 4 3-4" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
+const TYPE_IMAGES = {
+  Lunar: "https://images.unsplash.com/photo-eHTBf7286Xw?w=80&h=80&fit=crop&auto=format",
+  Marte: "https://images.unsplash.com/photo-0va-HPsNz1w?w=80&h=80&fit=crop&auto=format",
+  Reutilizable: "https://images.unsplash.com/photo-SNIl4gK46Sc?w=80&h=80&fit=crop&auto=format",
+  Tripulado: "https://images.unsplash.com/photo-wAkLQnT2TC0?w=80&h=80&fit=crop&auto=format",
+  Lanzador: "https://images.unsplash.com/photo-SNIl4gK46Sc?w=80&h=80&fit=crop&auto=format",
 };
 
 function MissionTypeIcon({ type }) {
   return (
-    <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
-      {TYPE_ICONS[type] || TYPE_ICONS.Lanzador}
+    <div className="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0 bg-slate-800">
+      <img
+        src={TYPE_IMAGES[type] || TYPE_IMAGES.Lanzador}
+        alt={type}
+        className="w-full h-full object-cover"
+      />
     </div>
   );
 }
@@ -296,8 +272,12 @@ function MissionDetailModal({ mission, onClose }) {
       >
         <div className="text-center mb-4">
           <div className="flex justify-center mb-2">
-            <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center">
-              {TYPE_ICONS[mission.type] || TYPE_ICONS.Lanzador}
+            <div className="w-14 h-14 rounded-2xl overflow-hidden bg-slate-800 shadow-lg">
+              <img
+                src={TYPE_IMAGES[mission.type] || TYPE_IMAGES.Lanzador}
+                alt={mission.type}
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
           <span className="text-2xl">{mission.flag}</span>
