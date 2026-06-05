@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { OrbixContext } from "../context/OrbixContext";
 import { useDashboardWidgets } from "../hooks/useDashboardWidgets";
 import { useDashboardSections } from "../hooks/useDashboardSections";
+import { useDashboardLock } from "../hooks/useDashboardLock";
 import { useCountdown } from "../hooks/useCountdown";
 import ISSTracker from "../components/ISSTracker";
 import ChatAI from "../components/ChatAI";
@@ -16,6 +17,7 @@ export default function CommanderDashboard({ commander, setCommander }) {
   const { dailyPhoto, messages, sendMessage, inOrbitData, allAstronauts, launchData } = useContext(OrbixContext);
   const { widgets, addWidget, removeWidget } = useDashboardWidgets();
   const { visibleSections, toggleSection } = useDashboardSections();
+  const { locked, toggleLock, positions, savePosition } = useDashboardLock();
 
   const handleLogout = () => {
     setCommander(null);
@@ -64,7 +66,7 @@ export default function CommanderDashboard({ commander, setCommander }) {
 
           {visibleSections.find((s) => s.id === "iss-tracker") && (
             <SectionWrapper key="iss-tracker" className="md:col-span-4">
-              <DraggableWidget title="Orbital Tracking (ISS)">
+              <DraggableWidget title="Orbital Tracking (ISS)" widgetId="iss-tracker" locked={locked} positions={positions} onDragEnd={savePosition}>
                 <ISSTracker inOrbitCount={inOrbitCount} />
                 <div className="mt-2 text-[8px] text-slate-600 text-center">ALT: 408 KM · VEL: 7.66 KM/S</div>
               </DraggableWidget>
@@ -73,7 +75,7 @@ export default function CommanderDashboard({ commander, setCommander }) {
 
           {visibleSections.find((s) => s.id === "chat") && (
             <SectionWrapper key="chat" className="md:col-span-6">
-              <DraggableWidget title="Global Communication Feed" className="h-[560px] flex flex-col">
+              <DraggableWidget title="Global Communication Feed" widgetId="chat" locked={locked} positions={positions} onDragEnd={savePosition} className="h-[560px] flex flex-col">
                 <ChatAI messages={messages} sendMessage={sendMessage} widgetsCount={visibleIds.length} />
               </DraggableWidget>
             </SectionWrapper>
@@ -81,7 +83,7 @@ export default function CommanderDashboard({ commander, setCommander }) {
 
           {visibleSections.find((s) => s.id === "my-missions") && (
             <SectionWrapper key="my-missions" className="md:col-span-3">
-              <DraggableWidget title="My Missions">
+              <DraggableWidget title="My Missions" widgetId="my-missions" locked={locked} positions={positions} onDragEnd={savePosition}>
                 <div className="space-y-3 max-h-[260px] overflow-y-auto custom-scrollbar pr-1">
                   {widgets.map((w) => (
                     <MissionWidgetCard key={w.id} widget={w} onRemove={removeWidget} />
@@ -101,7 +103,7 @@ export default function CommanderDashboard({ commander, setCommander }) {
 
           {visibleSections.find((s) => s.id === "quick-stats") && (
             <SectionWrapper key="quick-stats" className="md:col-span-3">
-              <DraggableWidget title="Quick Stats">
+              <DraggableWidget title="Quick Stats" widgetId="quick-stats" locked={locked} positions={positions} onDragEnd={savePosition}>
                 <div className="space-y-3 text-[10px]">
                   <StatRow label="Widgets visibles" value={visibleIds.length} />
                   <StatRow label="Misiones guardadas" value={widgets.length} />
@@ -115,7 +117,7 @@ export default function CommanderDashboard({ commander, setCommander }) {
 
           {visibleSections.find((s) => s.id === "space-race") && (
             <SectionWrapper key="space-race" className="md:col-span-4">
-              <DraggableWidget title="Space Race Dominance">
+              <DraggableWidget title="Space Race Dominance" widgetId="space-race" locked={locked} positions={positions} onDragEnd={savePosition}>
                 <SpaceRaceWidget allAstronauts={allAstronauts} launchData={launchData} />
               </DraggableWidget>
             </SectionWrapper>
@@ -123,7 +125,7 @@ export default function CommanderDashboard({ commander, setCommander }) {
 
           {visibleSections.find((s) => s.id === "astronaut-explorer") && (
             <SectionWrapper key="astronaut-explorer" className="md:col-span-4">
-              <DraggableWidget title="Astronaut Explorer">
+              <DraggableWidget title="Astronaut Explorer" widgetId="astronaut-explorer" locked={locked} positions={positions} onDragEnd={savePosition}>
                 <AstronautExplorer allAstronauts={allAstronauts} />
               </DraggableWidget>
             </SectionWrapper>
@@ -131,7 +133,7 @@ export default function CommanderDashboard({ commander, setCommander }) {
 
           {visibleSections.find((s) => s.id === "space-news") && (
             <SectionWrapper key="space-news" className="md:col-span-4">
-              <DraggableWidget title="Space News">
+              <DraggableWidget title="Space News" widgetId="space-news" locked={locked} positions={positions} onDragEnd={savePosition}>
                 <SpaceNews />
               </DraggableWidget>
             </SectionWrapper>
@@ -140,7 +142,7 @@ export default function CommanderDashboard({ commander, setCommander }) {
         </div>
       </div>
 
-      <DashboardDock visibleIds={visibleIds} onToggle={toggleSection} />
+      <DashboardDock visibleIds={visibleIds} onToggle={toggleSection} locked={locked} onToggleLock={toggleLock} />
     </div>
   );
 }
@@ -160,13 +162,19 @@ function SectionWrapper({ children, className }) {
   );
 }
 
-function DraggableWidget({ title, children, className = "" }) {
+function DraggableWidget({ title, children, className = "", widgetId, locked, positions, onDragEnd }) {
+  const pos = widgetId ? positions?.[widgetId] : null;
   return (
     <motion.div
-      drag
+      drag={!locked}
       dragMomentum
       whileDrag={{ scale: 1.03, zIndex: 50, boxShadow: "0 0 40px rgba(6,182,212,0.2)" }}
-      className={`bg-slate-900/40 border border-white/10 backdrop-blur-xl p-6 rounded-3xl shadow-2xl cursor-grab active:cursor-grabbing select-none ${className}`}
+      onDragEnd={(_e, info) => {
+        if (onDragEnd && widgetId) {
+          onDragEnd(widgetId, info.offset.x, info.offset.y);
+        }
+      }}
+      className={`bg-slate-900/40 border border-white/10 backdrop-blur-xl p-6 rounded-3xl shadow-2xl select-none ${locked ? "" : "cursor-grab active:cursor-grabbing"} ${className}`}
     >
       <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-cyan-500/80 mb-4 border-b border-white/5 pb-2">{title}</h3>
       {children}

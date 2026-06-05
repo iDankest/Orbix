@@ -1,7 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
-
-const LOCK_KEY = "orbix_dock_locked";
+import { useState } from "react";
 
 const DOCK_ITEMS = [
   {
@@ -86,16 +84,8 @@ const DOCK_ITEMS = [
   },
 ];
 
-export default function DashboardDock({ visibleIds, onToggle }) {
+export default function DashboardDock({ visibleIds, onToggle, locked, onToggleLock }) {
   const [hoveredId, setHoveredId] = useState(null);
-  const [locked, setLocked] = useState(() => {
-    try { return JSON.parse(localStorage.getItem(LOCK_KEY) || "false"); }
-    catch { return false; }
-  });
-
-  useEffect(() => {
-    localStorage.setItem(LOCK_KEY, JSON.stringify(locked));
-  }, [locked]);
 
   const handleToggle = (id) => {
     if (!locked) onToggle(id);
@@ -224,7 +214,7 @@ export default function DashboardDock({ visibleIds, onToggle }) {
                 whileTap={{ scale: 0.85 }}
                 animate={{ scale: hoveredId === "__lock" ? 1.15 : 1 }}
                 transition={{ type: "spring", stiffness: 500, damping: 20 }}
-                onClick={() => setLocked((v) => !v)}
+                onClick={() => onToggleLock()}
                 onMouseEnter={() => setHoveredId("__lock")}
                 onMouseLeave={() => setHoveredId(null)}
                 className={`relative p-3 rounded-xl cursor-pointer transition-colors ${
