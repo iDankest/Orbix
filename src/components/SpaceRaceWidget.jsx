@@ -14,7 +14,7 @@ const AGENCIAS = [
   { name: "CNSA", country: "China", domain: "cnsa.gov.cn", color: "#DE2910", focus: ["Lunar", "Marte", "Estación"], budget: "~15B", logo: "https://pbs.twimg.com/profile_images/1634603372446621698/ilFJ3jOa_400x400.jpg" },
   { name: "ESA", country: "Europa", domain: "esa.int", color: "#004C97", focus: ["Lunar", "Marte", "Ariane"], budget: "7.8B" },
   { name: "Roscosmos", country: "Rusia", domain: "roscosmos.ru", color: "#0033A0", focus: ["Lunar", "Soyuz", "Estación"], budget: "~4B", logo: "https://rocket-launch-today.s3.us-east-1.amazonaws.com/roscosmos_ff804fc943.png" },
-  { name: "ISRO", country: "India", domain: "isro.gov.in", color: "#003366", focus: ["Lunar", "Marte", "Satélites"], budget: "~1.8B" },
+  { name: "ISRO", country: "India", domain: "isro.gov.in", color: "#003366", focus: ["Lunar", "Marte", "Satélites"], budget: "~1.8B", logo: "https://spacearcade.in/wp-content/uploads/2025/04/Black-and-White-Simple-Mug-Mockup-Instagram-Post-10-1-819x1024.png" },
   { name: "JAXA", country: "Japón", domain: "jaxa.jp", color: "#003DA5", focus: ["Lunar", "Asteroides", "ISS"], budget: "~2.5B", logo: "https://www.un-spider.org/sites/default/files/jaxa%20logo.png" },
   { name: "Blue Origin", country: "USA", domain: "blueorigin.com", color: "#002D62", focus: ["Reutilizable", "Lunar"], budget: "—" },
   { name: "Rocket Lab", country: "USA/NZ", domain: "rocketlabusa.com", color: "#A3C34A", focus: ["Pequeños", "Interplanetario"], budget: "—" },
