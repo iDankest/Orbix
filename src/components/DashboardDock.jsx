@@ -105,7 +105,22 @@ export default function DashboardDock({ visibleIds, onToggle }) {
       transition={{ type: "spring", stiffness: 200, damping: 20 }}
       className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100]"
     >
-      <div className="flex items-center gap-1 px-4 py-2.5 bg-slate-900/80 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl">
+      <motion.div
+        animate={{
+          boxShadow: [
+            "0 0 0 0 rgba(6, 182, 212, 0)",
+            "0 0 30px 0 rgba(6, 182, 212, 0.04)",
+            "0 0 0 0 rgba(6, 182, 212, 0)",
+          ],
+          borderColor: [
+            "rgba(255, 255, 255, 0.05)",
+            "rgba(6, 182, 212, 0.15)",
+            "rgba(255, 255, 255, 0.05)",
+          ],
+        }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        className="flex items-center gap-1 px-4 py-2.5 bg-slate-900/80 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl"
+      >
         {DOCK_ITEMS.map((item) => {
           const isActive = visibleIds.includes(item.id);
           const isHovered = hoveredId === item.id;
@@ -154,7 +169,7 @@ export default function DashboardDock({ visibleIds, onToggle }) {
             </div>
           );
         })}
-      </div>
+      </motion.div>
     </motion.div>
   );
 }
