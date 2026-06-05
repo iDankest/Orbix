@@ -1,14 +1,21 @@
 import { useState } from "react";
 
-const DEFAULT_SECTIONS = [
-  { id: "iss-tracker", title: "Orbital Tracking (ISS)", visible: true },
-  { id: "chat", title: "Global Communication Feed", visible: true },
-  { id: "my-missions", title: "My Missions", visible: true },
-  { id: "quick-stats", title: "Quick Stats", visible: true },
-  { id: "space-race", title: "Space Race", visible: true },
-  { id: "astronaut-explorer", title: "Astronaut Explorer", visible: true },
-  { id: "space-news", title: "Space News", visible: true },
+const ALL_SECTIONS = [
+  { id: "iss-tracker", title: "Orbital Tracking (ISS)" },
+  { id: "chat", title: "Global Communication Feed" },
+  { id: "my-missions", title: "My Missions" },
+  { id: "quick-stats", title: "Quick Stats" },
+  { id: "space-race", title: "Space Race" },
+  { id: "astronaut-explorer", title: "Astronaut Explorer" },
+  { id: "space-news", title: "Space News" },
 ];
+
+const DEFAULT_VISIBLE = new Set(["iss-tracker", "quick-stats", "my-missions"]);
+
+const DEFAULT_SECTIONS = ALL_SECTIONS.map((s) => ({
+  ...s,
+  visible: DEFAULT_VISIBLE.has(s.id),
+}));
 
 function initSections() {
   try {

@@ -1,5 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+const LOCK_KEY = "orbix_dock_locked";
 
 const DOCK_ITEMS = [
   {
@@ -86,6 +88,18 @@ const DOCK_ITEMS = [
 
 export default function DashboardDock({ visibleIds, onToggle }) {
   const [hoveredId, setHoveredId] = useState(null);
+  const [locked, setLocked] = useState(() => {
+    try { return JSON.parse(localStorage.getItem(LOCK_KEY) || "false"); }
+    catch { return false; }
+  });
+
+  useEffect(() => {
+    localStorage.setItem(LOCK_KEY, JSON.stringify(locked));
+  }, [locked]);
+
+  const handleToggle = (id) => {
+    if (!locked) onToggle(id);
+  };
 
   const getScale = (itemId) => {
     if (!hoveredId) return 1;
@@ -159,7 +173,7 @@ export default function DashboardDock({ visibleIds, onToggle }) {
                   whileTap={{ scale: 0.85 }}
                   animate={{ scale: getScale(item.id) }}
                   transition={{ type: "spring", stiffness: 500, damping: 20 }}
-                  onClick={() => onToggle(item.id)}
+                  onClick={() => handleToggle(item.id)}
                   onMouseEnter={() => setHoveredId(item.id)}
                   onMouseLeave={() => setHoveredId(null)}
                   className={`relative p-3 rounded-xl cursor-pointer transition-colors ${
@@ -180,7 +194,59 @@ export default function DashboardDock({ visibleIds, onToggle }) {
               </motion.div>
             );
           })}
-        </motion.div>
+
+            <div className="w-px h-6 bg-white/5 mx-1" />
+
+            <div className="relative flex flex-col items-center">
+              <AnimatePresence>
+                {hoveredId === "__lock" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.9 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                    className="absolute bottom-full mb-3 pointer-events-none z-50"
+                  >
+                    <div className="bg-slate-800/95 border border-white/10 rounded-xl px-3 py-2 shadow-2xl whitespace-nowrap text-center">
+                      <p className="text-white text-[10px] font-bold uppercase tracking-wider">
+                        {locked ? "Desbloquear dock" : "Bloquear dock"}
+                      </p>
+                      <p className="text-slate-400 text-[8px] mt-0.5">
+                        {locked ? "Permite editar widgets" : "Evita cambios accidentales"}
+                      </p>
+                    </div>
+                    <div className="mx-auto w-2 h-2 bg-slate-800 border-r border-b border-white/10 rotate-45 -mt-1" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <motion.button
+                whileTap={{ scale: 0.85 }}
+                animate={{ scale: hoveredId === "__lock" ? 1.15 : 1 }}
+                transition={{ type: "spring", stiffness: 500, damping: 20 }}
+                onClick={() => setLocked((v) => !v)}
+                onMouseEnter={() => setHoveredId("__lock")}
+                onMouseLeave={() => setHoveredId(null)}
+                className={`relative p-3 rounded-xl cursor-pointer transition-colors ${
+                  locked ? "text-cyan-400" : "text-slate-600 hover:text-slate-400"
+                }`}
+              >
+                {locked ? (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    <circle cx="12" cy="16" r="1" fill="currentColor" />
+                    <line x1="12" y1="17" x2="12" y2="19.5" />
+                  </svg>
+                )}
+              </motion.button>
+            </div>
+          </motion.div>
       </motion.div>
     </motion.div>
   );
