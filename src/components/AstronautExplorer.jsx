@@ -3,10 +3,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import AstroModal from "./AstroModal";
 import AstronautSkeleton from "./AstronautSkeleton";
 
+const PLACEHOLDER = "https://images.unsplash.com/photo-1669287731461-bd8ce3126710?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+
 export default function AstronautExplorer({ allAstronauts }) {
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState(null);
   const [showAll, setShowAll] = useState(false);
+  const [imgErrors, setImgErrors] = useState({});
 
   const filtered = useMemo(() => {
     if (!allAstronauts) return [];
@@ -54,10 +57,10 @@ export default function AstronautExplorer({ allAstronauts }) {
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-slate-800 overflow-hidden flex-shrink-0 border border-white/5">
                 <img
-                  src={astro.profile_image}
+                  src={imgErrors[astro.id] ? PLACEHOLDER : (astro.profile_image || PLACEHOLDER)}
                   alt={astro.name}
                   className="w-full h-full object-cover"
-                  onError={(e) => { e.target.style.display = "none"; }}
+                  onError={() => setImgErrors(prev => ({ ...prev, [astro.id]: true }))}
                 />
               </div>
               <div className="min-w-0">

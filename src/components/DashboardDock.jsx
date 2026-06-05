@@ -87,28 +87,40 @@ const DOCK_ITEMS = [
 export default function DashboardDock({ visibleIds, onToggle }) {
   const [hoveredId, setHoveredId] = useState(null);
 
+  const getScale = (itemId) => {
+    if (!hoveredId) return 1;
+    if (hoveredId === itemId) return 1.25;
+    const idx = DOCK_ITEMS.findIndex((i) => i.id === itemId);
+    const hoverIdx = DOCK_ITEMS.findIndex((i) => i.id === hoveredId);
+    const dist = Math.abs(idx - hoverIdx);
+    if (dist === 1) return 1.08;
+    if (dist === 2) return 1.03;
+    return 1;
+  };
+
   return (
     <motion.div
       initial={{ y: 60, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] flex justify-center"
+      transition={{ type: "spring", stiffness: 200, damping: 20 }}
+      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100]"
     >
-      <div className="inline-flex items-center gap-1 px-3 py-2 bg-slate-900/80 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl">
+      <div className="flex items-center gap-1 px-4 py-2.5 bg-slate-900/80 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl">
         {DOCK_ITEMS.map((item) => {
           const isActive = visibleIds.includes(item.id);
           const isHovered = hoveredId === item.id;
           return (
-            <div className="relative flex flex-col items-center">
+            <div key={item.id} className="relative flex flex-col items-center">
               <AnimatePresence>
                 {isHovered && (
                   <motion.div
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 6 }}
-                    transition={{ duration: 0.12 }}
-                    className="absolute bottom-full mb-2 pointer-events-none z-50"
+                    initial={{ opacity: 0, y: 8, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.9 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                    className="absolute bottom-full mb-3 pointer-events-none z-50"
                   >
-                    <div className="bg-slate-800 border border-white/10 rounded-xl px-3 py-2 shadow-2xl whitespace-nowrap text-center">
+                    <div className="bg-slate-800/95 border border-white/10 rounded-xl px-3 py-2 shadow-2xl whitespace-nowrap text-center">
                       <p className="text-white text-[10px] font-bold uppercase tracking-wider">{item.label}</p>
                       <p className="text-slate-400 text-[8px] mt-0.5">{item.desc}</p>
                     </div>
@@ -118,22 +130,26 @@ export default function DashboardDock({ visibleIds, onToggle }) {
               </AnimatePresence>
 
               <motion.button
-                key={item.id}
-                whileHover={{ scale: 1.15 }}
-                whileTap={{ scale: 0.9 }}
+                whileTap={{ scale: 0.85 }}
+                animate={{ scale: getScale(item.id) }}
+                transition={{ type: "spring", stiffness: 500, damping: 20 }}
                 onClick={() => onToggle(item.id)}
                 onMouseEnter={() => setHoveredId(item.id)}
                 onMouseLeave={() => setHoveredId(null)}
-                className={`relative p-3 rounded-xl transition-all cursor-pointer ${
+                className={`relative p-3 rounded-xl cursor-pointer transition-colors ${
                   isActive
-                    ? "text-cyan-400 bg-cyan-500/10 shadow-[0_0_15px_rgba(6,182,212,0.15)]"
+                    ? "text-cyan-400 bg-cyan-500/10"
                     : "text-slate-600 hover:text-slate-300 hover:bg-white/5"
                 }`}
               >
-                {item.icon}
                 {isActive && (
-                  <span className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-cyan-400 rounded-full" />
+                  <motion.span
+                    layoutId="dock-active"
+                    className="absolute inset-0 rounded-xl bg-cyan-500/10 border border-cyan-500/20"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
                 )}
+                <span className="relative z-10">{item.icon}</span>
               </motion.button>
             </div>
           );

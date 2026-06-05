@@ -2,6 +2,50 @@ import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCountdown } from "../hooks/useCountdown";
 
+const TYPE_ICONS = {
+  Lunar: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5 text-cyan-400">
+      <path d="M12 2a10 10 0 0 1 0 20 8 8 0 0 0 0-16z" strokeLinecap="round" />
+      <circle cx="14" cy="9" r="0.5" fill="currentColor" />
+      <circle cx="16" cy="13" r="0.5" fill="currentColor" />
+      <circle cx="10" cy="14" r="0.5" fill="currentColor" />
+    </svg>
+  ),
+  Marte: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5 text-red-400">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M15 9l4-4M19 5h-4M19 5v4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+  Reutilizable: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5 text-green-400">
+      <path d="M17 2l4 4-4 4" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M3 11V9a4 4 0 0 1 4-4h14M7 22l-4-4 4-4" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M21 13v2a4 4 0 0 1-4 4H3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+  Tripulado: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5 text-yellow-400">
+      <circle cx="12" cy="8" r="4" />
+      <path d="M5.5 20a8 8 0 0 1 13 0" strokeLinecap="round" />
+    </svg>
+  ),
+  Lanzador: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5 text-purple-400">
+      <path d="M4 20h16" strokeLinecap="round" />
+      <path d="M12 4v12M9 16l3 4 3-4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+};
+
+function MissionTypeIcon({ type }) {
+  return (
+    <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
+      {TYPE_ICONS[type] || TYPE_ICONS.Lanzador}
+    </div>
+  );
+}
+
 const TABS = [
   { id: "agencias", label: "Agencias" },
   { id: "misiones", label: "Misiones" },
@@ -164,9 +208,7 @@ function MissionRow({ mission, delay, onClick }) {
       className="w-full text-left bg-white/5 hover:bg-cyan-500/10 border border-white/5 hover:border-cyan-500/30 rounded-xl p-3 transition-all group"
     >
       <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0 text-base">
-          {mission.type === "Lunar" ? "🌙" : mission.type === "Marte" ? "🔴" : mission.type === "Reutilizable" ? "🔄" : mission.type === "Tripulado" ? "👨‍🚀" : "🚀"}
-        </div>
+        <MissionTypeIcon type={mission.type} />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5">
             <span className="text-xs">{mission.flag}</span>
@@ -253,9 +295,11 @@ function MissionDetailModal({ mission, onClose }) {
         className="bg-slate-900 border border-white/10 w-full max-w-sm rounded-2xl overflow-hidden relative z-10 shadow-2xl p-6"
       >
         <div className="text-center mb-4">
-          <span className="text-4xl block mb-2">
-            {mission.type === "Lunar" ? "🌙" : mission.type === "Marte" ? "🔴" : mission.type === "Reutilizable" ? "🔄" : "🚀"}
-          </span>
+          <div className="flex justify-center mb-2">
+            <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center">
+              {TYPE_ICONS[mission.type] || TYPE_ICONS.Lanzador}
+            </div>
+          </div>
           <span className="text-2xl">{mission.flag}</span>
           <h3 className="text-lg font-black text-white uppercase italic mt-2">{mission.name}</h3>
           <p className="text-[10px] text-cyan-400 font-bold mt-1">{mission.agency}</p>
