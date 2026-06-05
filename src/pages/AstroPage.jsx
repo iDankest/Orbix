@@ -14,11 +14,10 @@ export default function AstronautasPage() {
   const [isSearching, setIsSearching] = useState(false);
   // Definimos las llaves que queremos rastrear (incluyendo las anidadas)
   const keys = ["name", "nationality", "agency.name", "agency.abbrev"];
- 
 
   // Usamos el hook pasándole los 3 ingredientes
   const { filteredData } = useFilter(allAstronauts, keys, searchTerm);
- const closeModal = () => setSelectedAstro(null);
+  const closeModal = () => setSelectedAstro(null);
   // Efecto visual de carga al buscar
   useEffect(() => {
     if (searchTerm.length > 0) {
@@ -45,19 +44,17 @@ export default function AstronautasPage() {
       </div>
     );
 
-    // Dentro de tu función Astronautas()
-const [selectedAstro, setSelectedAstro] = useState(null);
-
+  // Dentro de tu función Astronautas()
+  const [selectedAstro, setSelectedAstro] = useState(null);
 
   return (
-    
     <div className="relative bg-slate-950 p-10 max-w-screen-2xl mx-auto">
       <div className="astro-header">
         <div className="stars-container"></div>
       </div>
-      
+
       {/* HEADER DE LA PÁGINA */}
-      <header className=" min-h-[30vh] flex flex-col  justify-between overflow-hidden pt-20 gap-8" >
+      <header className=" min-h-[30vh] flex flex-col  justify-between overflow-hidden pt-20 gap-8">
         <div className=" relative border-l-4 border-cyan-500 pl-6">
           <h1 className="text-4xl font-black text-white uppercase tracking-tighter">
             Archivo <span className="text-cyan-500">Tripulación</span>
@@ -93,19 +90,19 @@ const [selectedAstro, setSelectedAstro] = useState(null);
         >
           {filteredData?.length > 0 ? (
             filteredData.map((astro) => (
-             <motion.div
-    layoutId={`card-${astro.id}`} // <--- ID único para la transición
-    key={astro.id}
-    onClick={() => setSelectedAstro(astro)}
-    className="cursor-pointer"
-  >
-              <Card
-                id={astro.id}
-                name={astro.name}
-                img={astro.profile_image}
-                corporation={astro.agency?.abbrev || "Independiente"}
-                from={astro.nationality}
-              />
+              <motion.div
+                layoutId={`card-${astro.id}`} // <--- ID único para la transición
+                key={astro.id}
+                onClick={() => setSelectedAstro(astro)}
+                className="cursor-pointer"
+              >
+                <Card
+                  id={astro.id}
+                  name={astro.name}
+                  img={astro.profile_image}
+                  corporation={astro.agency?.abbrev || "Independiente"}
+                  from={astro.nationality}
+                />
               </motion.div>
             ))
           ) : (
