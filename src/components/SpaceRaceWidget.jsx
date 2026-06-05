@@ -1,93 +1,94 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 
-const FLAGS = {
-  "American": "🇺🇸", "Russian": "🇷🇺", "Chinese": "🇨🇳",
-  "Japanese": "🇯🇵", "French": "🇫🇷", "German": "🇩🇪",
-  "Italian": "🇮🇹", "Canadian": "🇨🇦", "British": "🇬🇧",
-  "Australian": "🇦🇺", "Indian": "🇮🇳", "Spanish": "🇪🇸",
-  "Belgian": "🇧🇪", "Swedish": "🇸🇪", "Danish": "🇩🇰",
-  "Dutch": "🇳🇱", "Israeli": "🇮🇱", "UAE": "🇦🇪",
-  "South African": "🇿🇦", "Brazilian": "🇧🇷", "Malaysian": "🇲🇾",
-  "Mexican": "🇲🇽", "Polish": "🇵🇱", "South Korean": "🇰🇷",
+const AGENCIES = {
+  "NASA": { color: "#0B3D91", short: "NASA" },
+  "SpaceX": { color: "#005288", short: "SPX" },
+  "Roscosmos": { color: "#0033A0", short: "ROSC" },
+  "ESA": { color: "#004C97", short: "ESA" },
+  "JAXA": { color: "#003DA5", short: "JAXA" },
+  "CNSA": { color: "#DE2910", short: "CNSA" },
+  "ISRO": { color: "#003366", short: "ISRO" },
+  "Axiom Space": { color: "#1A1A2E", short: "AXM" },
+  "Blue Origin": { color: "#002D62", short: "BLUE" },
+  "Rocket Lab": { color: "#A3C34A", short: "RKLB" },
+  "ULA": { color: "#2B5797", short: "ULA" },
+  "Virgin Galactic": { color: "#0033A0", short: "VG" },
 };
 
-const AGENCY_FLAGS = {
-  "NASA": "🇺🇸", "Roscosmos": "🇷🇺", "CNSA": "🇨🇳",
-  "ESA": "🇪🇺", "JAXA": "🇯🇵", "SpaceX": "🇺🇸",
-  "Axiom Space": "🇺🇸", "Blue Origin": "🇺🇸", "Rocket Lab": "🇺🇸",
-  "ISRO": "🇮🇳", "Virgin Galactic": "🇺🇸",
-};
-
-function getFlag(label) {
-  return FLAGS[label] || AGENCY_FLAGS[label] || "";
+function agencyStyle(name) {
+  const match = Object.keys(AGENCIES).find((k) => name.includes(k));
+  return match ? AGENCIES[match] : { color: "#334155", short: name.slice(0, 4).toUpperCase() };
 }
 
 export default function SpaceRaceWidget({ allAstronauts, launchData }) {
   const stats = useMemo(() => {
-    const astroCount = {};
     const launchCount = {};
-
-    (allAstronauts || []).forEach((a) => {
-      const key = a.nationality || "Unknown";
-      astroCount[key] = (astroCount[key] || 0) + 1;
-    });
 
     (launchData?.results || []).forEach((l) => {
       const name = l.launch_service_provider?.name || "Unknown";
-      const abbrev = l.launch_service_provider?.abbrev || name;
-      launchCount[abbrev] = (launchCount[abbrev] || 0) + 1;
+      launchCount[name] = (launchCount[name] || 0) + 1;
     });
 
-    const sortedAstro = Object.entries(astroCount)
+    const sorted = Object.entries(launchCount)
       .sort((a, b) => b[1] - a[1])
-      .slice(0, 4);
+      .slice(0, 6);
 
-    const sortedLaunch = Object.entries(launchCount)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 4);
+    const maxCount = sorted.length > 0 ? sorted[0][1] : 1;
 
-    return { sortedAstro, sortedLaunch };
-  }, [allAstronauts, launchData]);
+    return { sorted, maxCount };
+  }, [launchData]);
 
   return (
     <div className="space-y-4">
-      <div>
-        <p className="text-[8px] text-slate-500 uppercase tracking-widest mb-2">Astronautas por país</p>
-        <div className="space-y-1.5">
-          {stats.sortedAstro.map(([key, count], i) => (
-            <motion.div
-              key={key}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.05 }}
-              className="flex items-center gap-2 bg-white/5 rounded-lg px-2.5 py-1.5"
-            >
-              <span className="text-xs">{getFlag(key) || "🌍"}</span>
-              <span className="text-[9px] text-slate-300 flex-1 truncate">{key}</span>
-              <span className="text-[10px] text-cyan-400 font-black">{count}</span>
-            </motion.div>
-          ))}
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        <div className="bg-white/5 rounded-xl p-3 text-center">
+          <p className="text-2xl font-black text-white">{allAstronauts?.length || 0}</p>
+          <p className="text-[8px] text-slate-500 uppercase tracking-wider mt-1">Astronautas activos</p>
+        </div>
+        <div className="bg-white/5 rounded-xl p-3 text-center">
+          <p className="text-2xl font-black text-white">{stats.sorted.reduce((a, b) => a + b[1], 0)}</p>
+          <p className="text-[8px] text-slate-500 uppercase tracking-wider mt-1">Lanzamientos próximos</p>
         </div>
       </div>
 
-      <div>
-        <p className="text-[8px] text-slate-500 uppercase tracking-widest mb-2">Lanzamientos por agencia</p>
-        <div className="space-y-1.5">
-          {stats.sortedLaunch.map(([key, count], i) => (
+      <p className="text-[8px] text-slate-500 uppercase tracking-widest mb-2">Lanzamientos por agencia</p>
+      <div className="space-y-2">
+        {stats.sorted.map(([name, count], i) => {
+          const { color, short } = agencyStyle(name);
+          const pct = (count / stats.maxCount) * 100;
+          return (
             <motion.div
-              key={key}
-              initial={{ opacity: 0, x: -10 }}
+              key={name}
+              initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.05 }}
-              className="flex items-center gap-2 bg-white/5 rounded-lg px-2.5 py-1.5"
+              transition={{ delay: i * 0.06, type: "spring", bounce: 0.3 }}
+              className="flex items-center gap-2.5"
             >
-              <span className="text-xs">{getFlag(key) || "🚀"}</span>
-              <span className="text-[9px] text-slate-300 flex-1 truncate">{key}</span>
-              <span className="text-[10px] text-cyan-400 font-black">{count}</span>
+              <div
+                className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-[7px] font-black text-white"
+                style={{ backgroundColor: color }}
+              >
+                {short}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-[9px] text-slate-300 truncate">{name}</span>
+                  <span className="text-[10px] text-cyan-400 font-black ml-2">{count}</span>
+                </div>
+                <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${pct}%` }}
+                    transition={{ delay: i * 0.06 + 0.2, duration: 0.6, ease: "easeOut" }}
+                    className="h-full rounded-full"
+                    style={{ backgroundColor: color }}
+                  />
+                </div>
+              </div>
             </motion.div>
-          ))}
-        </div>
+          );
+        })}
       </div>
     </div>
   );
