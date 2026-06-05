@@ -1,4 +1,4 @@
-import { useLocalStorage } from "./useLocalStorage";
+import { useState } from "react";
 
 const DEFAULT_SECTIONS = [
   { id: "iss-tracker", title: "Orbital Tracking (ISS)", visible: true },
@@ -10,29 +10,50 @@ const DEFAULT_SECTIONS = [
   { id: "space-news", title: "Space News", visible: true },
 ];
 
+function initSections() {
+  try {
+    const raw = localStorage.getItem("orbix_sections");
+    if (!raw) return DEFAULT_SECTIONS;
+    const saved = JSON.parse(raw);
+    const defaultIds = new Set(DEFAULT_SECTIONS.map((s) => s.id));
+    const savedIds = new Set(saved.map((s) => s.id));
+    const missing = DEFAULT_SECTIONS.filter((s) => !savedIds.has(s.id));
+    if (missing.length === 0) return saved;
+    return [...saved, ...missing];
+  } catch {
+    return DEFAULT_SECTIONS;
+  }
+}
+
 export function useDashboardSections() {
-  const [sections, setSections] = useLocalStorage("orbix_sections", DEFAULT_SECTIONS);
+  const [sections, setSections] = useState(initSections);
+
+  const persist = (next) => {
+    const value = typeof next === "function" ? next(sections) : next;
+    setSections(value);
+    localStorage.setItem("orbix_sections", JSON.stringify(value));
+  };
 
   const toggleSection = (id) => {
-    setSections((prev) =>
+    persist((prev) =>
       prev.map((s) => (s.id === id ? { ...s, visible: !s.visible } : s))
     );
   };
 
   const hideSection = (id) => {
-    setSections((prev) =>
+    persist((prev) =>
       prev.map((s) => (s.id === id ? { ...s, visible: false } : s))
     );
   };
 
   const showSection = (id) => {
-    setSections((prev) =>
+    persist((prev) =>
       prev.map((s) => (s.id === id ? { ...s, visible: true } : s))
     );
   };
 
   const resetSections = () => {
-    setSections(DEFAULT_SECTIONS);
+    persist(DEFAULT_SECTIONS);
   };
 
   const visibleSections = sections.filter((s) => s.visible);
