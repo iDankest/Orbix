@@ -7,7 +7,7 @@ const TYPE_IMAGES = {
   Marte: "https://images.unsplash.com/photo-1654649451086-dd75d8170a27?w=80&h=80&fit=crop&auto=format",
   Reutilizable: "https://images.unsplash.com/photo-1517976547714-720226b864c1?w=80&h=80&fit=crop&auto=format",
   Tripulado: "https://images.unsplash.com/photo-1661035739366-3b64cda80c1a?w=80&h=80&fit=crop&auto=format",
-  Lanzador: "https://images.unsplash.com/photo-1517976547714-720226b864c1?w=80&h=80&fit=crop&auto=format",
+  Lanzador: "https://images.unsplash.com/photo-1614729375290-b2a429db839b?w=80&h=80&fit=crop&auto=format",
 };
 
 function MissionTypeIcon({ type }) {
