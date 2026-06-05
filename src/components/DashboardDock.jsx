@@ -58,6 +58,30 @@ const DOCK_ITEMS = [
       </svg>
     ),
   },
+  {
+    id: "astronaut-explorer",
+    label: "Astronauts",
+    desc: "Busca y explora astronautas activos",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
+        <circle cx="9" cy="7" r="4" />
+        <path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        <path d="M21 21v-2a4 4 0 0 0-3-3.85" />
+      </svg>
+    ),
+  },
+  {
+    id: "space-news",
+    label: "News",
+    desc: "Últimas noticias del espacio",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
+        <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-4 0v-9" />
+        <path d="M10 7h6M10 11h6M10 15h4" />
+      </svg>
+    ),
+  },
 ];
 
 export default function DashboardDock({ visibleIds, onToggle }) {

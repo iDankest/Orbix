@@ -9,6 +9,8 @@ import ChatAI from "../components/ChatAI";
 import DashboardDock from "../components/DashboardDock";
 import MissionSelector from "../components/MissionSelector";
 import SpaceRaceWidget from "../components/SpaceRaceWidget";
+import AstronautExplorer from "../components/AstronautExplorer";
+import SpaceNews from "../components/SpaceNews";
 
 export default function CommanderDashboard({ commander, setCommander }) {
   const { dailyPhoto, messages, sendMessage, inOrbitData, allAstronauts, launchData } = useContext(OrbixContext);
@@ -112,9 +114,25 @@ export default function CommanderDashboard({ commander, setCommander }) {
           )}
 
           {visibleSections.find((s) => s.id === "space-race") && (
-            <SectionWrapper key="space-race" className="md:col-span-5">
+            <SectionWrapper key="space-race" className="md:col-span-4">
               <DraggableWidget title="Space Race Dominance">
                 <SpaceRaceWidget allAstronauts={allAstronauts} launchData={launchData} />
+              </DraggableWidget>
+            </SectionWrapper>
+          )}
+
+          {visibleSections.find((s) => s.id === "astronaut-explorer") && (
+            <SectionWrapper key="astronaut-explorer" className="md:col-span-4">
+              <DraggableWidget title="Astronaut Explorer">
+                <AstronautExplorer allAstronauts={allAstronauts} />
+              </DraggableWidget>
+            </SectionWrapper>
+          )}
+
+          {visibleSections.find((s) => s.id === "space-news") && (
+            <SectionWrapper key="space-news" className="md:col-span-4">
+              <DraggableWidget title="Space News">
+                <SpaceNews />
               </DraggableWidget>
             </SectionWrapper>
           )}
