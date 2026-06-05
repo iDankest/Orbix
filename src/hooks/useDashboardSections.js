@@ -7,6 +7,7 @@ const DEFAULT_SECTIONS = [
   { id: "chat", title: "Global Communication Feed", visible: true },
   { id: "my-missions", title: "My Missions", visible: true },
   { id: "quick-stats", title: "Quick Stats", visible: true },
+  { id: "space-race", title: "Space Race", visible: false },
 ];
 
 export function useDashboardSections() {

@@ -70,6 +70,18 @@ const DOCK_ITEMS = [
       </svg>
     ),
   },
+  {
+    id: "space-race",
+    label: "Space Race",
+    desc: "Dominio por país y agencia espacial",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
+        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+        <path d="M2 17l10 5 10-5" />
+        <path d="M2 12l10 5 10-5" />
+      </svg>
+    ),
+  },
 ];
 
 export default function DashboardDock({ visibleIds, onToggle }) {
