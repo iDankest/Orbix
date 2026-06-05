@@ -7,12 +7,12 @@ const placeholder =
 
 // --- SUB-COMPONENTE: EL TOGGLE (Solo los botones) ---
 const LaunchToggle = ({ view, setView }) => (
-  <div className="flex items-center gap-4 bg-slate-900/50 p-1 rounded-full w-fit border border-white/10">
+  <div className="flex items-center bg-slate-900/50 p-1 rounded-full w-fit border border-white/10">
     {["upcoming", "previous"].map((v) => (
       <button
         key={v}
         onClick={() => setView(v)}
-        className={`relative px-6 py-2 text-[10px] font-black uppercase tracking-widest z-10 transition-colors ${view === v ? "text-black" : "text-slate-400"}`}
+        className={`relative px-4 md:px-6 py-2 text-[9px] md:text-[10px] font-black uppercase tracking-widest z-10 transition-colors whitespace-nowrap ${view === v ? "text-black" : "text-slate-400"}`}
       >
         {v === "upcoming" ? "Próximos" : "Historial"}
         {view === v && (
@@ -159,61 +159,110 @@ export default function LaunchesPage() {
         {/* 3. RENDERIZADO CONDICIONAL DE CONTENIDO */}
         <AnimatePresence mode="wait">
           {view === "upcoming" ? (
-            <motion.div
-              key="table"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="w-full overflow-x-auto rounded-3xl border border-white/10 bg-slate-950/50 backdrop-blur-xl"
-            >
-                  <table className="w-full text-left min-w-[600px] md:min-w-[700px]">
-                <thead>
-                  <tr className="bg-white/5 border-b border-white/10 text-[11px] font-black uppercase tracking-[0.2em] text-slate-500">
-                    <th className="px-4 md:px-8 py-4 md:py-6">Misión</th>
-                    <th className="px-4 md:px-8 py-4 md:py-6">Cohete</th>
-                    <th className="px-4 md:px-8 py-4 md:py-6">Fecha / T-Minus</th>
-                    <th className="px-4 md:px-8 py-4 md:py-6 text-right">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/5">
-                  {launchData.results.map((launch) => (
-                    <tr
-                      key={launch.id}
-                      className="group hover:bg-cyan-500/5 transition-all"
-                    >
-                      <td className="px-4 md:px-8 py-4 md:py-6">
-                        <div className="font-bold text-white group-hover:text-cyan-400 transition-colors text-sm md:text-base">
-                          {launch.name}
-                        </div>
-                        <div className="text-[10px] text-slate-500 uppercase">
-                          {launch.launch_service_provider.name}
-                        </div>
-                      </td>
-                      <td className="px-4 md:px-8 py-4 md:py-6 font-mono text-xs md:text-sm text-slate-400">
-                        {launch.rocket?.configuration?.full_name}
-                      </td>
-                      <td className="px-4 md:px-8 py-4 md:py-6 font-mono text-xs md:text-sm">
-                        <TimerCell date={launch.net} />
-                      </td>
-                      <td className="px-4 md:px-8 py-4 md:py-6 text-right flex justify-end gap-2 md:gap-3">
-                        <button
-                          onClick={() => setSelectedLaunch(launch)}
-                          className="p-2 md:p-3 rounded-xl bg-white/5 text-white text-[9px] md:text-[10px] font-bold border border-white/5"
-                        >
-                          DETALLES
-                        </button>
-                        <button
-                          onClick={() => setActiveLive(launch)}
-                          className="px-3 md:px-5 py-2 md:py-3 rounded-xl bg-cyan-500 text-black font-black uppercase text-[9px] md:text-[10px]"
-                        >
-                          LIVE FEED
-                        </button>
-                      </td>
+            <>
+              {/* Tabla - Desktop */}
+              <motion.div
+                key="table"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="hidden md:block w-full overflow-x-auto rounded-3xl border border-white/10 bg-slate-950/50 backdrop-blur-xl"
+              >
+                <table className="w-full text-left min-w-[600px] lg:min-w-[700px]">
+                  <thead>
+                    <tr className="bg-white/5 border-b border-white/10 text-[11px] font-black uppercase tracking-[0.2em] text-slate-500">
+                      <th className="px-4 lg:px-8 py-4 lg:py-6">Misión</th>
+                      <th className="px-4 lg:px-8 py-4 lg:py-6">Cohete</th>
+                      <th className="px-4 lg:px-8 py-4 lg:py-6">Fecha / T-Minus</th>
+                      <th className="px-4 lg:px-8 py-4 lg:py-6 text-right">Acciones</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </motion.div>
+                  </thead>
+                  <tbody className="divide-y divide-white/5">
+                    {launchData.results.map((launch) => (
+                      <tr
+                        key={launch.id}
+                        className="group hover:bg-cyan-500/5 transition-all"
+                      >
+                        <td className="px-4 lg:px-8 py-4 lg:py-6">
+                          <div className="font-bold text-white group-hover:text-cyan-400 transition-colors text-sm lg:text-base">
+                            {launch.name}
+                          </div>
+                          <div className="text-[10px] text-slate-500 uppercase">
+                            {launch.launch_service_provider.name}
+                          </div>
+                        </td>
+                        <td className="px-4 lg:px-8 py-4 lg:py-6 font-mono text-xs lg:text-sm text-slate-400">
+                          {launch.rocket?.configuration?.full_name}
+                        </td>
+                        <td className="px-4 lg:px-8 py-4 lg:py-6 font-mono text-xs lg:text-sm">
+                          <TimerCell date={launch.net} />
+                        </td>
+                        <td className="px-4 lg:px-8 py-4 lg:py-6 text-right flex justify-end gap-2 lg:gap-3">
+                          <button
+                            onClick={() => setSelectedLaunch(launch)}
+                            className="p-2 lg:p-3 rounded-xl bg-white/5 text-white text-[9px] lg:text-[10px] font-bold border border-white/5"
+                          >
+                            DETALLES
+                          </button>
+                          <button
+                            onClick={() => setActiveLive(launch)}
+                            className="px-3 lg:px-5 py-2 lg:py-3 rounded-xl bg-cyan-500 text-black font-black uppercase text-[9px] lg:text-[10px]"
+                          >
+                            LIVE FEED
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </motion.div>
+
+              {/* Cards - Mobile */}
+              <motion.div
+                key="cards-mobile"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="md:hidden space-y-3"
+              >
+                {launchData.results.map((launch, i) => (
+                  <motion.div
+                    key={launch.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.04 }}
+                    className="bg-slate-900/60 border border-white/5 rounded-2xl p-4"
+                  >
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="flex-1 min-w-0 mr-2">
+                        <p className="text-white font-bold text-sm truncate">{launch.name}</p>
+                        <p className="text-[9px] text-slate-500 uppercase truncate">
+                          {launch.launch_service_provider.name}
+                        </p>
+                      </div>
+                      <TimerCell date={launch.net} />
+                    </div>
+                    <p className="text-[10px] text-slate-400 font-mono mb-3">
+                      {launch.rocket?.configuration?.full_name}
+                    </p>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setSelectedLaunch(launch)}
+                        className="flex-1 py-2.5 rounded-xl bg-white/5 text-white text-[9px] font-bold border border-white/5"
+                      >
+                        DETALLES
+                      </button>
+                      <button
+                        onClick={() => setActiveLive(launch)}
+                        className="flex-1 py-2.5 rounded-xl bg-cyan-500 text-black font-black uppercase text-[9px]"
+                      >
+                        LIVE FEED
+                      </button>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </>
           ) : (
             <motion.div
               key="history"
