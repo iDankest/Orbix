@@ -8,9 +8,10 @@ import ISSTracker from "../components/ISSTracker";
 import ChatAI from "../components/ChatAI";
 import DashboardDock from "../components/DashboardDock";
 import MissionSelector from "../components/MissionSelector";
+import SpaceRaceWidget from "../components/SpaceRaceWidget";
 
 export default function CommanderDashboard({ commander, setCommander }) {
-  const { dailyPhoto, messages, sendMessage, inOrbitData } = useContext(OrbixContext);
+  const { dailyPhoto, messages, sendMessage, inOrbitData, allAstronauts, launchData } = useContext(OrbixContext);
   const { widgets, addWidget, removeWidget } = useDashboardWidgets();
   const { visibleSections, toggleSection } = useDashboardSections();
   const constraintsRef = useRef(null);
@@ -23,6 +24,7 @@ export default function CommanderDashboard({ commander, setCommander }) {
   if (!commander) return <div className="p-20 text-red-500">ACCESO DENEGADO: NO SE DETECTA CREDENCIALES</div>;
 
   const visibleIds = visibleSections.map((s) => s.id);
+  const inOrbitCount = inOrbitData?.results?.length || 0;
 
   return (
     <div
@@ -58,17 +60,12 @@ export default function CommanderDashboard({ commander, setCommander }) {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+
           {visibleSections.find((s) => s.id === "iss-tracker") && (
             <SectionWrapper key="iss-tracker" className="md:col-span-4">
               <DraggableWidget title="Orbital Tracking (ISS)" constraintsRef={constraintsRef}>
-                <ISSTracker />
-                <div className="grid grid-cols-2 gap-2 mt-3 text-[10px]">
-                  <div className="bg-white/5 p-2 rounded flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse" />
-                    <span>{inOrbitData?.results?.length || 0} astronautas</span>
-                  </div>
-                  <div className="bg-white/5 p-2 rounded">ALT: 408 KM</div>
-                </div>
+                <ISSTracker inOrbitCount={inOrbitCount} />
+                <div className="mt-2 text-[8px] text-slate-600 text-center">ALT: 408 KM · VEL: 7.66 KM/S</div>
               </DraggableWidget>
             </SectionWrapper>
           )}
@@ -105,7 +102,7 @@ export default function CommanderDashboard({ commander, setCommander }) {
           {visibleSections.find((s) => s.id === "chat") && (
             <SectionWrapper key="chat" className="md:col-span-6">
               <DraggableWidget title="Global Communication Feed" className="h-[560px] flex flex-col" constraintsRef={constraintsRef}>
-                <ChatAI messages={messages} sendMessage={sendMessage} widgetsCount={widgets.length} />
+                <ChatAI messages={messages} sendMessage={sendMessage} widgetsCount={visibleIds.length} />
               </DraggableWidget>
             </SectionWrapper>
           )}
@@ -134,13 +131,24 @@ export default function CommanderDashboard({ commander, setCommander }) {
             <SectionWrapper key="quick-stats" className="md:col-span-3">
               <DraggableWidget title="Quick Stats" constraintsRef={constraintsRef}>
                 <div className="space-y-3 text-[10px]">
-                  <StatRow label="Widgets activos" value={widgets.length} />
+                  <StatRow label="Widgets visibles" value={visibleIds.length} />
+                  <StatRow label="Misiones guardadas" value={widgets.length} />
                   <StatRow label="Mensajes hoy" value={messages?.length || 0} />
-                  <StatRow label="En órbita" value={inOrbitData?.results?.length || 0} />
+                  <StatRow label="En órbita" value={inOrbitCount} />
+                  <StatRow label="Astronautas activos" value={allAstronauts?.length || 0} />
                 </div>
               </DraggableWidget>
             </SectionWrapper>
           )}
+
+          {visibleSections.find((s) => s.id === "space-race") && (
+            <SectionWrapper key="space-race" className="md:col-span-4">
+              <DraggableWidget title="Space Race Dominance" constraintsRef={constraintsRef}>
+                <SpaceRaceWidget allAstronauts={allAstronauts} launchData={launchData} />
+              </DraggableWidget>
+            </SectionWrapper>
+          )}
+
         </div>
       </div>
 
